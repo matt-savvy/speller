@@ -1,4 +1,4 @@
-module Speller exposing (Word(..), alphabetize, isSolved, main)
+module Speller exposing (Word(..), alphabetize, cleanValue, isSolved, main)
 
 import Browser
 import Html exposing (Html, div, input, text)
@@ -45,7 +45,16 @@ update : Msg -> Model -> Model
 update msg model =
     case msg of
         TextChanged newValue ->
-            { model | textValue = newValue, solved = isSolved model.word newValue }
+            let
+                cleanedValue =
+                    newValue
+            in
+            { model | textValue = cleanedValue, solved = isSolved model.word cleanedValue }
+
+
+cleanValue : String -> String
+cleanValue input =
+    input |> String.filter ((/=) ' ')
 
 
 isSolved : Word -> String -> Bool

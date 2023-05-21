@@ -1,7 +1,7 @@
 module SpellerTest exposing (..)
 
 import Expect
-import Speller exposing (Word(..), alphabetize, isSolved)
+import Speller exposing (Word(..), alphabetize, cleanValue, isSolved)
 import Test exposing (..)
 
 
@@ -15,5 +15,9 @@ suite =
         , describe "isSolved"
             [ test "a correct answer is True" <|
                 \_ -> Expect.equal True (isSolved (Word "fabric") "abcfir")
+            ]
+        , describe "cleanValue"
+            [ test "no whitespace" <|
+                \_ -> Expect.equal False (String.contains " " (cleanValue "lorem ipsum"))
             ]
         ]
