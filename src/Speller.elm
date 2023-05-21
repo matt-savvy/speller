@@ -12,16 +12,25 @@ import String
 -- MODEL
 
 
+type Word
+    = Word String
+
+
+getWord : Word -> String
+getWord (Word word) =
+    word
+
+
 type alias Model =
     { textValue : String
-    , word : String
+    , word : Word
     , solved : Bool
     }
 
 
 init : Model
 init =
-    { textValue = "", word = "fabric", solved = False }
+    { textValue = "", word = Word "fabric", solved = False }
 
 
 
@@ -39,9 +48,9 @@ update msg model =
             { model | textValue = newValue, solved = isSolved model.word newValue }
 
 
-isSolved : String -> String -> Bool
+isSolved : Word -> String -> Bool
 isSolved word textValue =
-    textValue == sortWord word
+    textValue == sortWord (getWord word)
 
 
 sortWord : String -> String
@@ -57,7 +66,7 @@ view : Model -> Html Msg
 view model =
     div []
         [ input [ onInput TextChanged, value model.textValue ] []
-        , text model.word
+        , text (getWord model.word)
         ]
 
 
