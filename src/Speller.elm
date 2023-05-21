@@ -1,4 +1,4 @@
-module Speller exposing (Word(..), isSolved, main, sortWord)
+module Speller exposing (Word(..), alphabetize, isSolved, main)
 
 import Browser
 import Html exposing (Html, div, input, text)
@@ -50,11 +50,11 @@ update msg model =
 
 isSolved : Word -> String -> Bool
 isSolved word textValue =
-    textValue == sortWord (getWord word)
+    textValue == alphabetize (getWord word)
 
 
-sortWord : String -> String
-sortWord word =
+alphabetize : String -> String
+alphabetize word =
     word |> String.split "" |> List.sort |> String.join ""
 
 

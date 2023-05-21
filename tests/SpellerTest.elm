@@ -1,16 +1,16 @@
 module SpellerTest exposing (..)
 
 import Expect
-import Speller exposing (Word(..), isSolved, sortWord)
+import Speller exposing (Word(..), alphabetize, isSolved)
 import Test exposing (..)
 
 
 suite : Test
 suite =
     describe "Speller"
-        [ describe "sortWord"
+        [ describe "alphabetize"
             [ test "puts word in order" <|
-                \_ -> Expect.equal (sortWord "fabric") "abcfir"
+                \_ -> Expect.equal (alphabetize "fabric") "abcfir"
             ]
         , describe "isSolved"
             [ test "a correct answer is True" <|
