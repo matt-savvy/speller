@@ -1,9 +1,11 @@
-module Speller exposing (main)
+module Speller exposing (Word(..), isSolved, main, sortWord)
 
 import Browser
 import Html exposing (Html, div, input, text)
 import Html.Attributes exposing (value)
 import Html.Events exposing (onInput)
+import List
+import String
 
 
 
@@ -13,12 +15,13 @@ import Html.Events exposing (onInput)
 type alias Model =
     { textValue : String
     , word : String
+    , solved : Bool
     }
 
 
 init : Model
 init =
-    { textValue = "", word = "fabric" }
+    { textValue = "", word = "fabric", solved = False }
 
 
 
@@ -33,7 +36,17 @@ update : Msg -> Model -> Model
 update msg model =
     case msg of
         TextChanged newValue ->
-            { model | textValue = newValue }
+            { model | textValue = newValue, solved = isSolved model.word newValue }
+
+
+isSolved : String -> String -> Bool
+isSolved word textValue =
+    textValue == sortWord word
+
+
+sortWord : String -> String
+sortWord word =
+    word |> String.split "" |> List.sort |> String.join ""
 
 
 
