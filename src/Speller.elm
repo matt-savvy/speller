@@ -5,7 +5,9 @@ import Html exposing (Html, div, input, text)
 import Html.Attributes exposing (value)
 import Html.Events exposing (onInput)
 import List
+import Random
 import String
+import Words exposing (words)
 
 
 
@@ -24,13 +26,27 @@ getWord (Word word) =
 type alias Model =
     { textValue : String
     , word : Word
+    , seed : Random.Seed
     , solved : Bool
     }
 
 
+randomWord : Random.Seed -> ( String, Random.Seed )
+randomWord seed =
+    let
+        wordGenerator =
+            Random.uniform "plane" words
+    in
+    Random.step wordGenerator seed
+
+
 init : Model
 init =
-    { textValue = "", word = Word "fabric", solved = False }
+    let
+        ( word, nextSeed ) =
+            0 |> Random.initialSeed |> randomWord
+    in
+    { textValue = "", word = Word word, seed = nextSeed, solved = False }
 
 
 
