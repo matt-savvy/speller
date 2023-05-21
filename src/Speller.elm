@@ -12,12 +12,13 @@ import Html.Events exposing (onInput)
 
 type alias Model =
     { textValue : String
+    , word : String
     }
 
 
 init : Model
 init =
-    { textValue = "" }
+    { textValue = "", word = "fabric" }
 
 
 
@@ -43,7 +44,7 @@ view : Model -> Html Msg
 view model =
     div []
         [ input [ onInput TextChanged, value model.textValue ] []
-        , text model.textValue
+        , text model.word
         ]
 
 
