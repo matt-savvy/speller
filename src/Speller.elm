@@ -67,7 +67,17 @@ view model =
     div []
         [ input [ onInput TextChanged, value model.textValue ] []
         , text (getWord model.word)
+        , solvedView model.solved
         ]
+
+
+solvedView : Bool -> Html msg
+solvedView solved =
+    if solved then
+        div [] [ text "solved" ]
+
+    else
+        div [] []
 
 
 
