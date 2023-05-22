@@ -1,12 +1,14 @@
 module Speller exposing (Word(..), alphabetize, cleanValue, isSolved, main)
 
 import Browser
+import Browser.Dom as Dom
 import Html exposing (Html, div, form, input, text)
-import Html.Attributes exposing (value)
+import Html.Attributes exposing (id, value)
 import Html.Events exposing (onInput, onSubmit)
 import List
 import Random
 import String
+import Task
 import Words exposing (words)
 
 
@@ -55,7 +57,12 @@ init _ =
         ( word, nextSeed ) =
             0 |> Random.initialSeed |> randomWord
     in
-    ( { textValue = "", word = Word word (alphabetize word), seed = nextSeed, solved = Nothing }, Cmd.none )
+    ( { textValue = "", word = Word word (alphabetize word), seed = nextSeed, solved = Nothing }, focusInput )
+
+
+focusInput : Cmd Msg
+focusInput =
+    Task.attempt (\_ -> NoOp) (Dom.focus "text-input")
 
 
 
@@ -65,6 +72,7 @@ init _ =
 type Msg
     = TextChanged String
     | TextSubmit
+    | NoOp
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -75,6 +83,9 @@ update msg model =
 
         TextSubmit ->
             ( { model | solved = Just (isSolved model.word model.textValue) }, Cmd.none )
+
+        NoOp ->
+            ( model, Cmd.none )
 
 
 cleanValue : String -> String
@@ -106,7 +117,7 @@ subscriptions _ =
 view : Model -> Html Msg
 view model =
     form [ onSubmit TextSubmit ]
-        [ input [ onInput TextChanged, value model.textValue ] []
+        [ input [ id "text-input", onInput TextChanged, value model.textValue ] []
         , text (getWord model.word)
         , solvedView model.solved
         ]
