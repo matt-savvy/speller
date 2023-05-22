@@ -85,10 +85,19 @@ update msg model =
             ( { model | textValue = cleanValue newValue }, Cmd.none )
 
         TextSubmit ->
-            ( { model | solved = Just (isSolved model.word model.textValue) }, Cmd.none )
+            if isSolved model.word model.textValue then
+                ( solvedUpdate model, Cmd.none )
+
+            else
+                ( { model | solved = Just False }, Cmd.none )
 
         NoOp ->
             ( model, Cmd.none )
+
+
+solvedUpdate : Model -> Model
+solvedUpdate model =
+    { model | solved = Just True }
 
 
 cleanValue : String -> String
