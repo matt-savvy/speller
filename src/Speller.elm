@@ -103,10 +103,13 @@ update msg model =
 solvedUpdate : Model -> Model
 solvedUpdate model =
     let
+        ( nextWord, nextSeed ) =
+            randomWord model.seed
+
         score =
             model.score + 1
     in
-    { model | textValue = "", solved = Just True, score = score }
+    { model | textValue = "", solved = Just True, word = nextWord, seed = nextSeed, score = score }
 
 
 cleanValue : String -> String
