@@ -24,6 +24,23 @@ type alias Solved =
     Maybe Bool
 
 
+type alias Model =
+    { textValue : String
+    , word : Word
+    , seed : Random.Seed
+    , solved : Solved
+    }
+
+
+init : () -> ( Model, Cmd Msg )
+init _ =
+    let
+        ( word, nextSeed ) =
+            0 |> Random.initialSeed |> randomWord
+    in
+    ( { textValue = "", word = Word word (alphabetize word), seed = nextSeed, solved = Nothing }, focusInput )
+
+
 getWord : Word -> String
 getWord (Word word _) =
     word
@@ -34,14 +51,6 @@ getSolution (Word _ solution) =
     solution
 
 
-type alias Model =
-    { textValue : String
-    , word : Word
-    , seed : Random.Seed
-    , solved : Solved
-    }
-
-
 randomWord : Random.Seed -> ( String, Random.Seed )
 randomWord seed =
     let
@@ -49,15 +58,6 @@ randomWord seed =
             Random.uniform "plane" words
     in
     Random.step wordGenerator seed
-
-
-init : () -> ( Model, Cmd Msg )
-init _ =
-    let
-        ( word, nextSeed ) =
-            0 |> Random.initialSeed |> randomWord
-    in
-    ( { textValue = "", word = Word word (alphabetize word), seed = nextSeed, solved = Nothing }, focusInput )
 
 
 focusInput : Cmd Msg
