@@ -2,7 +2,7 @@ module Speller exposing (Word(..), alphabetize, cleanValue, isSolved, main)
 
 import Browser
 import Browser.Dom as Dom
-import Html.Styled exposing (Html, div, form, h1, h2, input, span, text, toUnstyled)
+import Html.Styled exposing (Html, div, form, h1, h2, input, p, span, text, toUnstyled)
 import Html.Styled.Attributes exposing (autocomplete, css, id, value)
 import Html.Styled.Events exposing (onInput, onSubmit)
 import List
@@ -141,13 +141,16 @@ subscriptions _ =
 
 view : Model -> Html Msg
 view model =
-    div []
-        [ wordView model.word
-        , scoreView model.score
-        , form [ onSubmit TextSubmit ]
-            [ input [ css [ Tw.text_xl, Tw.tracking_widest ], id "text-input", autocomplete False, onInput TextChanged, value model.textValue ] []
+    div [ css [ Tw.flex, Tw.justify_center ] ]
+        [ div []
+            [ p [ css [ Tw.text_lg ] ] [ text "Alphabetize the word and hit enter" ]
+            , wordView model.word
+            , scoreView model.score
+            , form [ onSubmit TextSubmit ]
+                [ input [ css [ Tw.text_xl, Tw.tracking_widest ], id "text-input", autocomplete False, onInput TextChanged, value model.textValue ] []
+                ]
+            , solvedView model.solved
             ]
-        , solvedView model.solved
         ]
 
 
