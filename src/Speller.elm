@@ -2,9 +2,9 @@ module Speller exposing (Word(..), alphabetize, cleanValue, isSolved, main)
 
 import Browser
 import Browser.Dom as Dom
-import Html exposing (Html, div, form, h1, h2, input, text)
-import Html.Attributes exposing (id, value)
-import Html.Events exposing (onInput, onSubmit)
+import Html.Styled exposing (Html, div, form, h1, h2, input, text, toUnstyled)
+import Html.Styled.Attributes exposing (id, value)
+import Html.Styled.Events exposing (onInput, onSubmit)
 import List
 import Random
 import String
@@ -180,4 +180,4 @@ solvedView solved =
 
 main : Program () Model Msg
 main =
-    Browser.element { init = init, update = update, view = view, subscriptions = subscriptions }
+    Browser.element { init = init, update = update, view = view >> toUnstyled, subscriptions = subscriptions }
