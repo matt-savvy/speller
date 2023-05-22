@@ -27,6 +27,11 @@ getWord (Word word _) =
     word
 
 
+getSolution : Word -> String
+getSolution (Word _ solution) =
+    solution
+
+
 type alias Model =
     { textValue : String
     , word : Word
@@ -83,7 +88,7 @@ cleanValue input =
 
 isSolved : Word -> String -> Bool
 isSolved word textValue =
-    textValue == alphabetize (getWord word)
+    textValue == getSolution word
 
 
 alphabetize : String -> String
