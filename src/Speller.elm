@@ -146,7 +146,7 @@ view model =
         , scoreView model.score
         , solvedView model.solved
         , form [ onSubmit TextSubmit ]
-            [ input [ id "text-input", autocomplete False, onInput TextChanged, value model.textValue ] []
+            [ input [ css [ Tw.text_xl, Tw.tracking_widest ], id "text-input", autocomplete False, onInput TextChanged, value model.textValue ] []
             ]
         ]
 
