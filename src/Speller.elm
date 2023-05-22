@@ -79,7 +79,9 @@ update msg model =
 
 cleanValue : String -> String
 cleanValue input =
-    input |> String.filter ((/=) ' ')
+    input
+        |> String.filter ((/=) ' ')
+        |> String.toLower
 
 
 isSolved : Word -> String -> Bool

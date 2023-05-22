@@ -19,5 +19,7 @@ suite =
         , describe "cleanValue"
             [ test "no whitespace" <|
                 \_ -> Expect.equal False (String.contains " " (cleanValue "lorem ipsum"))
+            , test "no uppercase" <|
+                \_ -> Expect.equal "lorem" (cleanValue "LoREM")
             ]
         ]
