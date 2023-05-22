@@ -15,7 +15,7 @@ import Words exposing (words)
 
 
 type Word
-    = Word String
+    = Word String String
 
 
 type alias Solved =
@@ -23,7 +23,7 @@ type alias Solved =
 
 
 getWord : Word -> String
-getWord (Word word) =
+getWord (Word word _) =
     word
 
 
@@ -50,7 +50,7 @@ init =
         ( word, nextSeed ) =
             0 |> Random.initialSeed |> randomWord
     in
-    { textValue = "", word = Word word, seed = nextSeed, solved = Nothing }
+    { textValue = "", word = Word word (alphabetize word), seed = nextSeed, solved = Nothing }
 
 
 
