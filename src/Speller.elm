@@ -2,7 +2,7 @@ module Speller exposing (Word(..), alphabetize, cleanValue, isSolved, main)
 
 import Browser
 import Browser.Dom as Dom
-import Html.Styled exposing (Html, div, form, h1, h2, input, text, toUnstyled)
+import Html.Styled exposing (Html, div, form, h1, h2, input, span, text, toUnstyled)
 import Html.Styled.Attributes exposing (css, id, value)
 import Html.Styled.Events exposing (onInput, onSubmit)
 import List
@@ -153,7 +153,16 @@ view model =
 
 wordView : Word -> Html Msg
 wordView word =
-    h1 [] [ text (getWord word) ]
+    let
+        list =
+            String.split "" (getWord word)
+    in
+    h1 [] (List.map letterView list)
+
+
+letterView : String -> Html Msg
+letterView letter =
+    span [ css [ Tw.mx_2 ] ] [ text letter ]
 
 
 scoreView : Score -> Html Msg
