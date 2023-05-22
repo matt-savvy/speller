@@ -140,11 +140,13 @@ subscriptions _ =
 
 view : Model -> Html Msg
 view model =
-    form [ onSubmit TextSubmit ]
-        [ input [ id "text-input", onInput TextChanged, value model.textValue ] []
-        , wordView model.word
+    div []
+        [ wordView model.word
         , scoreView model.score
         , solvedView model.solved
+        , form [ onSubmit TextSubmit ]
+            [ input [ id "text-input", onInput TextChanged, value model.textValue ] []
+            ]
         ]
 
 
