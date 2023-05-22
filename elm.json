@@ -11,6 +11,7 @@
             "elm/html": "1.0.0",
             "elm/random": "1.0.0",
             "elm-explorations/test": "2.1.1",
+            "matheus23/elm-default-tailwind-modules": "4.0.1",
             "rtfeldman/elm-css": "18.0.0"
         },
         "indirect": {
@@ -19,6 +20,7 @@
             "elm/time": "1.0.0",
             "elm/url": "1.0.0",
             "elm/virtual-dom": "1.0.3",
+            "matheus23/elm-tailwind-modules-base": "1.0.0",
             "robinheghan/murmur3": "1.0.0",
             "rtfeldman/elm-hex": "1.0.0"
         }
