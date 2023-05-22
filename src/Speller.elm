@@ -38,7 +38,7 @@ init _ =
         ( word, nextSeed ) =
             0 |> Random.initialSeed |> randomWord
     in
-    ( { textValue = "", word = Word word (alphabetize word), seed = nextSeed, solved = Nothing }, focusInput )
+    ( { textValue = "", word = word, seed = nextSeed, solved = Nothing }, focusInput )
 
 
 getWord : Word -> String
@@ -51,13 +51,16 @@ getSolution (Word _ solution) =
     solution
 
 
-randomWord : Random.Seed -> ( String, Random.Seed )
+randomWord : Random.Seed -> ( Word, Random.Seed )
 randomWord seed =
     let
         wordGenerator =
             Random.uniform "plane" words
+
+        ( word, nextSeed ) =
+            Random.step wordGenerator seed
     in
-    Random.step wordGenerator seed
+    ( Word word (alphabetize word), nextSeed )
 
 
 focusInput : Cmd Msg
