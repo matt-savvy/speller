@@ -141,5 +141,6 @@ solvedView solved =
 -- MAIN
 
 
+main : Program () Model Msg
 main =
     Browser.element { init = init, update = update, view = view, subscriptions = subscriptions }
