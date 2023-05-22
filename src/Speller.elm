@@ -49,13 +49,13 @@ randomWord seed =
     Random.step wordGenerator seed
 
 
-init : Model
-init =
+init : () -> ( Model, Cmd Msg )
+init _ =
     let
         ( word, nextSeed ) =
             0 |> Random.initialSeed |> randomWord
     in
-    { textValue = "", word = Word word (alphabetize word), seed = nextSeed, solved = Nothing }
+    ( { textValue = "", word = Word word (alphabetize word), seed = nextSeed, solved = Nothing }, Cmd.none )
 
 
 
@@ -67,14 +67,14 @@ type Msg
     | TextSubmit
 
 
-update : Msg -> Model -> Model
+update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         TextChanged newValue ->
-            { model | textValue = cleanValue newValue }
+            ( { model | textValue = cleanValue newValue }, Cmd.none )
 
         TextSubmit ->
-            { model | solved = Just (isSolved model.word model.textValue) }
+            ( { model | solved = Just (isSolved model.word model.textValue) }, Cmd.none )
 
 
 cleanValue : String -> String
@@ -92,6 +92,11 @@ isSolved word textValue =
 alphabetize : String -> String
 alphabetize word =
     word |> String.split "" |> List.sort |> String.join ""
+
+
+subscriptions : Model -> Sub Msg
+subscriptions _ =
+    Sub.none
 
 
 
@@ -126,4 +131,4 @@ solvedView solved =
 
 
 main =
-    Browser.sandbox { init = init, update = update, view = view }
+    Browser.element { init = init, update = update, view = view, subscriptions = subscriptions }
