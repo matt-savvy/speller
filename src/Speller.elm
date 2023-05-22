@@ -18,6 +18,10 @@ type Word
     = Word String
 
 
+type alias Solved =
+    Maybe Bool
+
+
 getWord : Word -> String
 getWord (Word word) =
     word
@@ -27,7 +31,7 @@ type alias Model =
     { textValue : String
     , word : Word
     , seed : Random.Seed
-    , solved : Bool
+    , solved : Solved
     }
 
 
@@ -46,7 +50,7 @@ init =
         ( word, nextSeed ) =
             0 |> Random.initialSeed |> randomWord
     in
-    { textValue = "", word = Word word, seed = nextSeed, solved = False }
+    { textValue = "", word = Word word, seed = nextSeed, solved = Nothing }
 
 
 
@@ -65,7 +69,7 @@ update msg model =
                 cleanedValue =
                     newValue
             in
-            { model | textValue = cleanedValue, solved = isSolved model.word cleanedValue }
+            { model | textValue = cleanedValue, solved = Just (isSolved model.word cleanedValue) }
 
 
 cleanValue : String -> String
@@ -96,13 +100,18 @@ view model =
         ]
 
 
-solvedView : Bool -> Html msg
+solvedView : Solved -> Html msg
 solvedView solved =
-    if solved then
-        div [] [ text "solved" ]
+    case solved of
+        Just result ->
+            if result then
+                div [] [ text "correct!" ]
 
-    else
-        div [] []
+            else
+                div [] [ text "incorrect!" ]
+
+        Nothing ->
+            div [] []
 
 
 
