@@ -1,9 +1,9 @@
 module Speller exposing (Word(..), alphabetize, cleanValue, isSolved, main)
 
 import Browser
-import Html exposing (Html, div, input, text)
+import Html exposing (Html, div, form, input, text)
 import Html.Attributes exposing (value)
-import Html.Events exposing (onInput)
+import Html.Events exposing (onInput, onSubmit)
 import List
 import Random
 import String
@@ -59,6 +59,7 @@ init =
 
 type Msg
     = TextChanged String
+    | TextSubmit
 
 
 update : Msg -> Model -> Model
@@ -69,7 +70,10 @@ update msg model =
                 cleanedValue =
                     newValue
             in
-            { model | textValue = cleanedValue, solved = Just (isSolved model.word cleanedValue) }
+            { model | textValue = cleanedValue }
+
+        TextSubmit ->
+            { model | solved = Just (isSolved model.word model.textValue) }
 
 
 cleanValue : String -> String
@@ -93,7 +97,7 @@ alphabetize word =
 
 view : Model -> Html Msg
 view model =
-    div []
+    form [ onSubmit TextSubmit ]
         [ input [ onInput TextChanged, value model.textValue ] []
         , text (getWord model.word)
         , solvedView model.solved
