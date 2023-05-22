@@ -3,7 +3,7 @@ module Speller exposing (Word(..), alphabetize, cleanValue, isSolved, main)
 import Browser
 import Browser.Dom as Dom
 import Html.Styled exposing (Html, div, form, h1, h2, input, span, text, toUnstyled)
-import Html.Styled.Attributes exposing (css, id, value)
+import Html.Styled.Attributes exposing (autocomplete, css, id, value)
 import Html.Styled.Events exposing (onInput, onSubmit)
 import List
 import Random
@@ -146,7 +146,7 @@ view model =
         , scoreView model.score
         , solvedView model.solved
         , form [ onSubmit TextSubmit ]
-            [ input [ id "text-input", onInput TextChanged, value model.textValue ] []
+            [ input [ id "text-input", autocomplete False, onInput TextChanged, value model.textValue ] []
             ]
         ]
 
