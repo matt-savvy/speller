@@ -24,11 +24,16 @@ type alias Solved =
     Maybe Bool
 
 
+type alias Score =
+    Int
+
+
 type alias Model =
     { textValue : String
     , word : Word
     , seed : Random.Seed
     , solved : Solved
+    , score : Score
     }
 
 
@@ -38,7 +43,7 @@ init _ =
         ( word, nextSeed ) =
             0 |> Random.initialSeed |> randomWord
     in
-    ( { textValue = "", word = word, seed = nextSeed, solved = Nothing }, focusInput )
+    ( { textValue = "", word = word, seed = nextSeed, solved = Nothing, score = 0 }, focusInput )
 
 
 getWord : Word -> String
@@ -97,7 +102,11 @@ update msg model =
 
 solvedUpdate : Model -> Model
 solvedUpdate model =
-    { model | solved = Just True }
+    let
+        score =
+            model.score + 1
+    in
+    { model | textValue = "", solved = Just True, score = score }
 
 
 cleanValue : String -> String
@@ -131,8 +140,14 @@ view model =
     form [ onSubmit TextSubmit ]
         [ input [ id "text-input", onInput TextChanged, value model.textValue ] []
         , text (getWord model.word)
+        , scoreView model.score
         , solvedView model.solved
         ]
+
+
+scoreView : Score -> Html Msg
+scoreView score =
+    div [] [ text ("Score: " ++ String.fromInt score) ]
 
 
 solvedView : Solved -> Html msg
