@@ -3,11 +3,12 @@ module Speller exposing (Word(..), alphabetize, cleanValue, isSolved, main)
 import Browser
 import Browser.Dom as Dom
 import Html.Styled exposing (Html, div, form, h1, h2, input, text, toUnstyled)
-import Html.Styled.Attributes exposing (id, value)
+import Html.Styled.Attributes exposing (css, id, value)
 import Html.Styled.Events exposing (onInput, onSubmit)
 import List
 import Random
 import String
+import Tailwind.Utilities as Tw
 import Task
 import Words exposing (words)
 
