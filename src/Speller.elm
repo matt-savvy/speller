@@ -144,10 +144,10 @@ view model =
     div []
         [ wordView model.word
         , scoreView model.score
-        , solvedView model.solved
         , form [ onSubmit TextSubmit ]
             [ input [ css [ Tw.text_xl, Tw.tracking_widest ], id "text-input", autocomplete False, onInput TextChanged, value model.textValue ] []
             ]
+        , solvedView model.solved
         ]
 
 
