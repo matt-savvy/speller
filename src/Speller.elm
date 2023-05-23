@@ -4,9 +4,9 @@ import Browser
 import Browser.Dom as Dom
 import Css
 import Feedback exposing (Feedback(..), getFeedback)
-import Html.Styled exposing (Html, div, form, h1, h2, input, p, span, text, toUnstyled)
-import Html.Styled.Attributes exposing (autocomplete, css, id, value)
-import Html.Styled.Events exposing (onInput, onSubmit)
+import Html.Styled exposing (Html, div, form, h1, h2, input, label, p, span, text, toUnstyled)
+import Html.Styled.Attributes exposing (autocomplete, checked, css, id, type_, value)
+import Html.Styled.Events exposing (onCheck, onInput, onSubmit)
 import List
 import Random
 import String
@@ -84,6 +84,7 @@ focusInput =
 type Msg
     = TextChanged String
     | TextSubmit
+    | FeedbackChanged Bool
     | NoOp
 
 
@@ -99,6 +100,9 @@ update msg model =
 
             else
                 ( { model | solved = Just False }, Cmd.none )
+
+        FeedbackChanged nextFeedback ->
+            ( { model | feedback = nextFeedback }, Cmd.none )
 
         NoOp ->
             ( model, Cmd.none )
@@ -151,9 +155,18 @@ view model =
             , scoreView model.score
             , form [ onSubmit TextSubmit ]
                 [ input [ css [ Tw.text_xl, Tw.tracking_widest ], id "text-input", autocomplete False, onInput TextChanged, value model.textValue ] []
+                , feedbackToggle model.feedback
                 ]
             , solvedView model.solved
             ]
+        ]
+
+
+feedbackToggle : Bool -> Html Msg
+feedbackToggle feedback =
+    label []
+        [ input [ type_ "checkbox", checked feedback, onCheck FeedbackChanged ] []
+        , text "Show feedback"
         ]
 
 
