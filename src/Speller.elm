@@ -2,6 +2,7 @@ module Speller exposing (Word(..), alphabetize, cleanValue, isSolved, main)
 
 import Browser
 import Browser.Dom as Dom
+import Css
 import Feedback exposing (Feedback(..), getFeedback)
 import Html.Styled exposing (Html, div, form, h1, h2, input, p, span, text, toUnstyled)
 import Html.Styled.Attributes exposing (autocomplete, css, id, value)
@@ -146,7 +147,7 @@ view model =
     div [ css [ Tw.flex, Tw.justify_center ] ]
         [ div []
             [ p [ css [ Tw.text_lg ] ] [ text "Alphabetize the word and hit enter" ]
-            , wordView (getFeedback (getWord model.word) model.textValue)
+            , wordView model
             , scoreView model.score
             , form [ onSubmit TextSubmit ]
                 [ input [ css [ Tw.text_xl, Tw.tracking_widest ], id "text-input", autocomplete False, onInput TextChanged, value model.textValue ] []
@@ -156,19 +157,29 @@ view model =
         ]
 
 
-wordView : List Feedback -> Html Msg
-wordView feedbackList =
-    h1 [] (List.map letterView feedbackList)
+wordView : Model -> Html Msg
+wordView model =
+    if model.feedback then
+        h1 [] (List.map feedbackLetterView (getFeedback (getWord model.word) model.textValue))
+
+    else
+        h1 []
+            (List.map (letterView []) (String.split "" (getWord model.word)))
 
 
-letterView : Feedback -> Html Msg
-letterView feedback =
+feedbackLetterView : Feedback -> Html Msg
+feedbackLetterView feedback =
     case feedback of
         Unused char ->
-            span [ css [ Tw.mx_2 ] ] [ text (String.fromChar char) ]
+            letterView [] (String.fromChar char)
 
         Used char ->
-            span [ css [ Tw.mx_2, Tw.opacity_50 ] ] [ text (String.fromChar char) ]
+            letterView [ Tw.opacity_50 ] (String.fromChar char)
+
+
+letterView : List Css.Style -> String -> Html Msg
+letterView classes letter =
+    span [ css (Tw.mx_2 :: classes) ] [ text letter ]
 
 
 scoreView : Score -> Html Msg
