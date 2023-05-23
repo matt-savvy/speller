@@ -36,6 +36,7 @@ type alias Model =
     , seed : Random.Seed
     , solved : Solved
     , score : Score
+    , feedback : Bool
     }
 
 
@@ -45,7 +46,7 @@ init _ =
         ( word, nextSeed ) =
             0 |> Random.initialSeed |> randomWord
     in
-    ( { textValue = "", word = word, seed = nextSeed, solved = Nothing, score = 0 }, focusInput )
+    ( { textValue = "", word = word, seed = nextSeed, solved = Nothing, score = 0, feedback = True }, focusInput )
 
 
 getWord : Word -> String
