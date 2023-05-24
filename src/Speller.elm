@@ -164,9 +164,11 @@ view model =
 
 feedbackToggle : Bool -> Html Msg
 feedbackToggle feedback =
-    label []
-        [ input [ type_ "checkbox", checked feedback, onCheck HardModeChanged ] []
-        , text "Hard mode"
+    div [ css [ Tw.my_4 ] ]
+        [ label []
+            [ input [ type_ "checkbox", checked feedback, onCheck HardModeChanged ] []
+            , text "Hard mode"
+            ]
         ]
 
 
