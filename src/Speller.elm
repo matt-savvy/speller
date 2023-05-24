@@ -1,4 +1,4 @@
-module Speller exposing (cleanValue, isSolved, main)
+module Speller exposing (cleanValue, getTimeSeed, isSolved, main)
 
 import Browser
 import Browser.Dom as Dom
@@ -94,7 +94,11 @@ update msg model =
             ( { model | hardMode = nextFeedback }, Cmd.none )
 
         GetTime time ->
-            ( { model | time = time }, Cmd.none )
+            let
+                ( word, nextSeed ) =
+                    getTimeSeed time model.zone |> Random.initialSeed |> randomWord
+            in
+            ( { model | time = time, word = word, seed = nextSeed }, Cmd.none )
 
         AdjustTimeZone timeZone ->
             ( { model | zone = timeZone }, Cmd.none )
@@ -125,6 +129,61 @@ cleanValue input =
 isSolved : Word -> String -> Bool
 isSolved word textValue =
     textValue == getSolution word
+
+
+getTimeSeed : Time.Posix -> Time.Zone -> Int
+getTimeSeed time timeZone =
+    let
+        year =
+            Time.toYear timeZone time
+
+        month =
+            monthToInt (Time.toMonth timeZone time)
+
+        day =
+            Time.toDay timeZone time
+    in
+    (year * 10000) + (month * 100) + day
+
+
+monthToInt : Time.Month -> Int
+monthToInt month =
+    case month of
+        Time.Jan ->
+            1
+
+        Time.Feb ->
+            2
+
+        Time.Mar ->
+            3
+
+        Time.Apr ->
+            4
+
+        Time.May ->
+            5
+
+        Time.Jun ->
+            6
+
+        Time.Jul ->
+            7
+
+        Time.Aug ->
+            8
+
+        Time.Sep ->
+            9
+
+        Time.Oct ->
+            10
+
+        Time.Nov ->
+            11
+
+        Time.Dec ->
+            12
 
 
 

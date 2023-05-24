@@ -1,8 +1,9 @@
 module SpellerTest exposing (..)
 
 import Expect
-import Speller exposing (cleanValue, isSolved)
+import Speller exposing (cleanValue, getTimeSeed, isSolved)
 import Test exposing (..)
+import Time exposing (millisToPosix, utc)
 import Word exposing (createWord)
 
 
@@ -20,5 +21,27 @@ suite =
                 \_ -> Expect.equal False (String.contains " " (cleanValue "lorem ipsum"))
             , test "no uppercase" <|
                 \_ -> Expect.equal "lorem" (cleanValue "LoREM")
+            ]
+        , describe "getTimeSeed"
+            [ test "values match for same day" <|
+                \_ ->
+                    let
+                        posixA =
+                            millisToPosix 1684886400000
+
+                        posixB =
+                            millisToPosix 1684972799999
+                    in
+                    Expect.equal (getTimeSeed posixA utc) (getTimeSeed posixB utc)
+            , test "values don't match for different days" <|
+                \_ ->
+                    let
+                        posixA =
+                            millisToPosix 1684886400000
+
+                        posixB =
+                            millisToPosix 1684972800000
+                    in
+                    Expect.notEqual (getTimeSeed posixA utc) (getTimeSeed posixB utc)
             ]
         ]
