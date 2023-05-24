@@ -106,6 +106,10 @@ isSolved word textValue =
     textValue == getSolution word
 
 
+
+-- SUBSCRIPTIONS
+
+
 subscriptions : Model -> Sub Msg
 subscriptions _ =
     Sub.none
