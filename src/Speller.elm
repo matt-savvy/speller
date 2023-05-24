@@ -12,6 +12,7 @@ import Random
 import String
 import Tailwind.Utilities as Tw
 import Task
+import Time
 import Word exposing (Word, getSolution, getWord, randomWord)
 
 
@@ -34,6 +35,8 @@ type alias Model =
     , solved : Solved
     , score : Score
     , hardMode : Bool
+    , time : Time.Posix
+    , zone : Time.Zone
     }
 
 
@@ -43,12 +46,22 @@ init _ =
         ( word, nextSeed ) =
             0 |> Random.initialSeed |> randomWord
     in
-    ( { inputValue = "", word = word, seed = nextSeed, solved = Nothing, score = 0, hardMode = False }, focusInput )
+    ( { inputValue = "", word = word, seed = nextSeed, solved = Nothing, score = 0, hardMode = False, time = Time.millisToPosix 0, zone = Time.utc }, Cmd.batch [ focusInput, getTimeZone, getTime ] )
 
 
 focusInput : Cmd Msg
 focusInput =
     Task.attempt (\_ -> NoOp) (Dom.focus "text-input")
+
+
+getTime : Cmd Msg
+getTime =
+    Task.perform GetTime Time.now
+
+
+getTimeZone : Cmd Msg
+getTimeZone =
+    Task.perform AdjustTimeZone Time.here
 
 
 
@@ -59,6 +72,8 @@ type Msg
     = InputChanged String
     | Submit
     | HardModeChanged Bool
+    | GetTime Time.Posix
+    | AdjustTimeZone Time.Zone
     | NoOp
 
 
@@ -77,6 +92,12 @@ update msg model =
 
         HardModeChanged nextFeedback ->
             ( { model | hardMode = nextFeedback }, Cmd.none )
+
+        GetTime time ->
+            ( { model | time = time }, Cmd.none )
+
+        AdjustTimeZone timeZone ->
+            ( { model | zone = timeZone }, Cmd.none )
 
         NoOp ->
             ( model, Cmd.none )
