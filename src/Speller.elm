@@ -37,7 +37,7 @@ type alias Model =
     , seed : Random.Seed
     , solved : Solved
     , score : Score
-    , feedback : Bool
+    , hardMode : Bool
     }
 
 
@@ -47,7 +47,7 @@ init _ =
         ( word, nextSeed ) =
             0 |> Random.initialSeed |> randomWord
     in
-    ( { textValue = "", word = word, seed = nextSeed, solved = Nothing, score = 0, feedback = True }, focusInput )
+    ( { textValue = "", word = word, seed = nextSeed, solved = Nothing, score = 0, hardMode = False }, focusInput )
 
 
 getWord : Word -> String
@@ -84,7 +84,7 @@ focusInput =
 type Msg
     = TextChanged String
     | TextSubmit
-    | FeedbackChanged Bool
+    | HardModeChanged Bool
     | NoOp
 
 
@@ -101,8 +101,8 @@ update msg model =
             else
                 ( { model | solved = Just False }, Cmd.none )
 
-        FeedbackChanged nextFeedback ->
-            ( { model | feedback = nextFeedback }, Cmd.none )
+        HardModeChanged nextFeedback ->
+            ( { model | hardMode = nextFeedback }, Cmd.none )
 
         NoOp ->
             ( model, Cmd.none )
@@ -155,7 +155,7 @@ view model =
             , scoreView model.score
             , form [ onSubmit TextSubmit ]
                 [ input [ css [ Tw.text_xl, Tw.tracking_widest ], id "text-input", autocomplete False, onInput TextChanged, value model.textValue ] []
-                , feedbackToggle model.feedback
+                , feedbackToggle model.hardMode
                 ]
             , solvedView model.solved
             ]
@@ -165,14 +165,14 @@ view model =
 feedbackToggle : Bool -> Html Msg
 feedbackToggle feedback =
     label []
-        [ input [ type_ "checkbox", checked feedback, onCheck FeedbackChanged ] []
-        , text "Show feedback"
+        [ input [ type_ "checkbox", checked feedback, onCheck HardModeChanged ] []
+        , text "Hard mode"
         ]
 
 
 wordView : Model -> Html Msg
 wordView model =
-    if model.feedback then
+    if not model.hardMode then
         h1 [] (List.map feedbackLetterView (getFeedback (getWord model.word) model.textValue))
 
     else
