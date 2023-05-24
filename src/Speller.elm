@@ -46,7 +46,17 @@ init _ =
         ( word, nextSeed ) =
             0 |> Random.initialSeed |> randomWord
     in
-    ( { inputValue = "", word = word, seed = nextSeed, solved = Nothing, score = 0, hardMode = False, time = Time.millisToPosix 0, zone = Time.utc }, Cmd.batch [ focusInput, getTimeZone, getTime ] )
+    ( { inputValue = ""
+      , word = word
+      , seed = nextSeed
+      , solved = Nothing
+      , score = 0
+      , hardMode = False
+      , time = Time.millisToPosix 0
+      , zone = Time.utc
+      }
+    , Cmd.batch [ focusInput, getTimeZone, getTime ]
+    )
 
 
 focusInput : Cmd Msg
