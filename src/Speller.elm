@@ -28,7 +28,7 @@ type alias Score =
 
 
 type alias Model =
-    { textValue : String
+    { inputValue : String
     , word : Word
     , seed : Random.Seed
     , solved : Solved
@@ -43,7 +43,7 @@ init _ =
         ( word, nextSeed ) =
             0 |> Random.initialSeed |> randomWord
     in
-    ( { textValue = "", word = word, seed = nextSeed, solved = Nothing, score = 0, hardMode = False }, focusInput )
+    ( { inputValue = "", word = word, seed = nextSeed, solved = Nothing, score = 0, hardMode = False }, focusInput )
 
 
 focusInput : Cmd Msg
@@ -56,7 +56,7 @@ focusInput =
 
 
 type Msg
-    = TextChanged String
+    = InputChanged String
     | TextSubmit
     | HardModeChanged Bool
     | NoOp
@@ -65,11 +65,11 @@ type Msg
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        TextChanged newValue ->
-            ( { model | textValue = cleanValue newValue }, Cmd.none )
+        InputChanged nextInputValue ->
+            ( { model | inputValue = cleanValue nextInputValue }, Cmd.none )
 
         TextSubmit ->
-            if isSolved model.word model.textValue then
+            if isSolved model.word model.inputValue then
                 ( solvedUpdate model, Cmd.none )
 
             else
@@ -91,7 +91,7 @@ solvedUpdate model =
         score =
             model.score + 1
     in
-    { model | textValue = "", solved = Just True, word = nextWord, seed = nextSeed, score = score }
+    { model | inputValue = "", solved = Just True, word = nextWord, seed = nextSeed, score = score }
 
 
 cleanValue : String -> String
@@ -123,7 +123,7 @@ view model =
             , wordView model
             , scoreView model.score
             , form [ onSubmit TextSubmit ]
-                [ input [ css [ Tw.text_xl, Tw.tracking_widest ], id "text-input", autocomplete False, onInput TextChanged, value model.textValue ] []
+                [ input [ css [ Tw.text_xl, Tw.tracking_widest ], id "text-input", autocomplete False, onInput InputChanged, value model.inputValue ] []
                 , feedbackToggle model.hardMode
                 ]
             , solvedView model.solved
@@ -144,7 +144,7 @@ feedbackToggle feedback =
 wordView : Model -> Html Msg
 wordView model =
     if not model.hardMode then
-        h1 [] (List.map feedbackLetterView (getFeedback (getWord model.word) model.textValue))
+        h1 [] (List.map feedbackLetterView (getFeedback (getWord model.word) model.inputValue))
 
     else
         h1 []
