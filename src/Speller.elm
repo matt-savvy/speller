@@ -1,4 +1,4 @@
-module Speller exposing (Word(..), alphabetize, cleanValue, isSolved, main)
+module Speller exposing (cleanValue, isSolved, main)
 
 import Browser
 import Browser.Dom as Dom
@@ -12,15 +12,11 @@ import Random
 import String
 import Tailwind.Utilities as Tw
 import Task
-import Words exposing (words)
+import Word exposing (Word, getSolution, getWord, randomWord)
 
 
 
 -- MODEL
-
-
-type Word
-    = Word String String
 
 
 type alias Solved =
@@ -48,28 +44,6 @@ init _ =
             0 |> Random.initialSeed |> randomWord
     in
     ( { textValue = "", word = word, seed = nextSeed, solved = Nothing, score = 0, hardMode = False }, focusInput )
-
-
-getWord : Word -> String
-getWord (Word word _) =
-    word
-
-
-getSolution : Word -> String
-getSolution (Word _ solution) =
-    solution
-
-
-randomWord : Random.Seed -> ( Word, Random.Seed )
-randomWord seed =
-    let
-        wordGenerator =
-            Random.uniform "plane" words
-
-        ( word, nextSeed ) =
-            Random.step wordGenerator seed
-    in
-    ( Word word (alphabetize word), nextSeed )
 
 
 focusInput : Cmd Msg
@@ -130,11 +104,6 @@ cleanValue input =
 isSolved : Word -> String -> Bool
 isSolved word textValue =
     textValue == getSolution word
-
-
-alphabetize : String -> String
-alphabetize word =
-    word |> String.split "" |> List.sort |> String.join ""
 
 
 subscriptions : Model -> Sub Msg
