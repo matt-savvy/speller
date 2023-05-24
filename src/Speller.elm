@@ -57,7 +57,7 @@ focusInput =
 
 type Msg
     = InputChanged String
-    | TextSubmit
+    | Submit
     | HardModeChanged Bool
     | NoOp
 
@@ -68,7 +68,7 @@ update msg model =
         InputChanged nextInputValue ->
             ( { model | inputValue = cleanValue nextInputValue }, Cmd.none )
 
-        TextSubmit ->
+        Submit ->
             if isSolved model.word model.inputValue then
                 ( solvedUpdate model, Cmd.none )
 
@@ -122,7 +122,7 @@ view model =
             [ p [ css [ Tw.text_lg ] ] [ text "Alphabetize the word and hit enter" ]
             , wordView model
             , scoreView model.score
-            , form [ onSubmit TextSubmit ]
+            , form [ onSubmit Submit ]
                 [ input [ css [ Tw.text_xl, Tw.tracking_widest ], id "text-input", autocomplete False, onInput InputChanged, value model.inputValue ] []
                 , feedbackToggle model.hardMode
                 ]
