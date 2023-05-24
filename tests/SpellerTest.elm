@@ -12,6 +12,8 @@ suite =
         [ describe "isSolved"
             [ test "a correct answer is True" <|
                 \_ -> Expect.equal True (isSolved (createWord "fabric") "abcfir")
+            , test "an incorrect answer is False" <|
+                \_ -> Expect.equal False (isSolved (createWord "fabric") "firabc")
             ]
         , describe "cleanValue"
             [ test "no whitespace" <|
