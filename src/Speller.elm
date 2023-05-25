@@ -55,7 +55,7 @@ init _ =
       , time = Time.millisToPosix 0
       , zone = Time.utc
       }
-    , Cmd.batch [ focusInput, getTimeZone, getTime ]
+    , Cmd.batch [ focusInput, getTimeZone ]
     )
 
 
@@ -111,7 +111,7 @@ update msg model =
             ( { model | time = time, word = word, seed = nextSeed }, Cmd.none )
 
         AdjustTimeZone timeZone ->
-            ( { model | zone = timeZone }, Cmd.none )
+            ( { model | zone = timeZone }, getTime )
 
         NoOp ->
             ( model, Cmd.none )
