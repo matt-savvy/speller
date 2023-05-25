@@ -4,9 +4,9 @@ import Browser
 import Browser.Dom as Dom
 import Css
 import Feedback exposing (Feedback(..), getFeedback)
-import Html.Styled exposing (Html, div, form, h1, h2, input, label, p, span, text, toUnstyled)
+import Html.Styled exposing (Html, button, div, form, h1, h2, input, label, p, span, text, toUnstyled)
 import Html.Styled.Attributes exposing (autocomplete, checked, css, id, type_, value)
-import Html.Styled.Events exposing (onCheck, onInput, onSubmit)
+import Html.Styled.Events exposing (onCheck, onClick, onInput, onSubmit)
 import List
 import Random
 import String
@@ -37,11 +37,17 @@ type alias Score =
     Int
 
 
+type GameStatus
+    = Inactive
+    | Active
+
+
 type alias Model =
     { inputValue : String
     , word : Word
     , seed : Random.Seed
     , solved : Solved
+    , status : GameStatus
     , score : Score
     , hardMode : Bool
     , startTime : Maybe Time.Posix
@@ -60,6 +66,7 @@ init _ =
       , word = word
       , seed = nextSeed
       , solved = Nothing
+      , status = Inactive
       , score = 0
       , hardMode = False
       , startTime = Nothing
@@ -90,7 +97,8 @@ getStartTime =
 
 
 type Msg
-    = InputChanged String
+    = GotStart
+    | InputChanged String
     | Submit
     | HardModeChanged Bool
     | AdjustTimeZone Time.Zone
@@ -102,6 +110,9 @@ type Msg
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
+        GotStart ->
+            ( { model | status = Active }, Cmd.none )
+
         InputChanged nextInputValue ->
             ( { model | inputValue = cleanValue nextInputValue }, Cmd.none )
 
@@ -226,19 +237,40 @@ subscriptions _ =
 
 view : Model -> Html Msg
 view model =
+    let
+        body =
+            case model.status of
+                Active ->
+                    [ wordView model
+                    , form [ onSubmit Submit ]
+                        [ input [ css [ Tw.text_xl, Tw.tracking_widest ], id "text-input", autocomplete False, onInput InputChanged, value model.inputValue ] []
+                        , feedbackToggle model.hardMode
+                        ]
+                    , scoreView model.score
+                    , timerView model.startTime model.time
+                    , solvedView model.solved
+                    ]
+
+                Inactive ->
+                    [ startButton ]
+    in
     div [ css [ Tw.flex, Tw.justify_center ] ]
         [ div []
-            [ p [ css [ Tw.text_lg ] ] [ text "Alphabetize the word and hit enter" ]
-            , wordView model
-            , form [ onSubmit Submit ]
-                [ input [ css [ Tw.text_xl, Tw.tracking_widest ], id "text-input", autocomplete False, onInput InputChanged, value model.inputValue ] []
-                , feedbackToggle model.hardMode
-                ]
-            , scoreView model.score
-            , timerView model.startTime model.time
-            , solvedView model.solved
-            ]
+            (p [ css [ Tw.text_lg ] ] [ text "Alphabetize the word and hit enter" ] :: body)
         ]
+
+
+startButton : Html Msg
+startButton =
+    button
+        [ css
+            [ Tw.py_2
+            , Tw.px_4
+            , Tw.rounded
+            ]
+        , onClick GotStart
+        ]
+        [ text "Start" ]
 
 
 feedbackToggle : Bool -> Html Msg
