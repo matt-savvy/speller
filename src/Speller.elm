@@ -95,6 +95,7 @@ type Msg
     | HardModeChanged Bool
     | AdjustTimeZone Time.Zone
     | GotTime Time.Posix
+    | Tick Time.Posix
     | NoOp
 
 
@@ -123,6 +124,9 @@ update msg model =
                     getTimeSeed time model.zone |> Random.initialSeed |> randomWord
             in
             ( { model | time = Just time, startTime = Just time, word = word, seed = nextSeed }, Cmd.none )
+
+        Tick time ->
+            ( { model | time = Just time }, Cmd.none )
 
         NoOp ->
             ( model, Cmd.none )
@@ -213,7 +217,7 @@ monthToInt month =
 
 subscriptions : Model -> Sub Msg
 subscriptions _ =
-    Sub.none
+    Time.every 1000 Tick
 
 
 
