@@ -44,7 +44,7 @@ type alias Model =
     , solved : Solved
     , score : Score
     , hardMode : Bool
-    , time : Time.Posix
+    , time : Maybe Time.Posix
     , zone : Time.Zone
     }
 
@@ -61,7 +61,7 @@ init _ =
       , solved = Nothing
       , score = 0
       , hardMode = False
-      , time = Time.millisToPosix 0
+      , time = Nothing
       , zone = Time.utc
       }
     , Cmd.batch [ focusInput, getTimeZone ]
@@ -120,7 +120,7 @@ update msg model =
                 ( word, nextSeed ) =
                     getTimeSeed time model.zone |> Random.initialSeed |> randomWord
             in
-            ( { model | time = time, word = word, seed = nextSeed }, Cmd.none )
+            ( { model | time = Just time, word = word, seed = nextSeed }, Cmd.none )
 
         NoOp ->
             ( model, Cmd.none )
