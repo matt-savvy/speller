@@ -80,7 +80,7 @@ getTimeZone =
 
 getTime : Cmd Msg
 getTime =
-    Task.perform GetTime Time.now
+    Task.perform GotTime Time.now
 
 
 
@@ -92,7 +92,7 @@ type Msg
     | Submit
     | HardModeChanged Bool
     | AdjustTimeZone Time.Zone
-    | GetTime Time.Posix
+    | GotTime Time.Posix
     | NoOp
 
 
@@ -115,7 +115,7 @@ update msg model =
         AdjustTimeZone timeZone ->
             ( { model | zone = timeZone }, getTime )
 
-        GetTime time ->
+        GotTime time ->
             let
                 ( word, nextSeed ) =
                     getTimeSeed time model.zone |> Random.initialSeed |> randomWord
