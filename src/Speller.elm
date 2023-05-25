@@ -17,6 +17,15 @@ import Word exposing (Word, getSolution, getWord, randomWord)
 
 
 
+-- DEVELOP
+
+
+randomWordOffset : Int
+randomWordOffset =
+    9
+
+
+
 -- MODEL
 
 
@@ -153,7 +162,7 @@ getTimeSeed time timeZone =
         day =
             Time.toDay timeZone time
     in
-    (year * 10000) + (month * 100) + day
+    (year * 10000) + (month * 100) + day - randomWordOffset
 
 
 monthToInt : Time.Month -> Int
