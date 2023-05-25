@@ -230,11 +230,11 @@ view model =
         [ div []
             [ p [ css [ Tw.text_lg ] ] [ text "Alphabetize the word and hit enter" ]
             , wordView model
-            , scoreView model.score
             , form [ onSubmit Submit ]
                 [ input [ css [ Tw.text_xl, Tw.tracking_widest ], id "text-input", autocomplete False, onInput InputChanged, value model.inputValue ] []
                 , feedbackToggle model.hardMode
                 ]
+            , scoreView model.score
             , timerView model.startTime model.time
             , solvedView model.solved
             ]
