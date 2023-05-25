@@ -38,7 +38,8 @@ type alias Score =
 
 
 type GameStatus
-    = Inactive
+    = Loading
+    | Ready
     | Active
     | GameOver
 
@@ -67,14 +68,14 @@ init _ =
       , word = word
       , seed = nextSeed
       , solved = Nothing
-      , status = Inactive
+      , status = Loading
       , score = 0
       , hardMode = False
       , startTime = Nothing
       , time = Nothing
       , zone = Time.utc
       }
-    , Cmd.batch [ focusInput, getTimeZone ]
+    , getTimeZone
     )
 
 
@@ -117,7 +118,7 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         GotStart ->
-            ( { model | status = Active }, Cmd.none )
+            ( model, getStartTime )
 
         InputChanged nextInputValue ->
             ( { model | inputValue = cleanValue nextInputValue }, Cmd.none )
@@ -133,19 +134,19 @@ update msg model =
             ( { model | hardMode = nextFeedback }, Cmd.none )
 
         AdjustTimeZone timeZone ->
-            ( { model | zone = timeZone }, getStartTime )
+            ( { model | zone = timeZone, status = Ready }, Cmd.none )
 
         GotStartTime time ->
             let
                 ( word, nextSeed ) =
                     getTimeSeed time model.zone |> Random.initialSeed |> randomWord
             in
-            ( { model | time = Just time, startTime = Just time, word = word, seed = nextSeed }, Cmd.none )
+            ( { model | status = Active, time = Just time, startTime = Just time, word = word, seed = nextSeed }, focusInput )
 
         Tick time ->
             case model.startTime of
                 Just startTime ->
-                    if (Time.posixToMillis startTime + timeLimit) < Time.posixToMillis time then
+                    if (Time.posixToMillis startTime + timeLimit) <= Time.posixToMillis time then
                         ( { model | time = Just time, status = GameOver }, Cmd.none )
 
                     else
@@ -255,6 +256,12 @@ view model =
     let
         body =
             case model.status of
+                Loading ->
+                    []
+
+                Ready ->
+                    [ startButton ]
+
                 Active ->
                     [ wordView model
                     , form [ onSubmit Submit ]
@@ -265,9 +272,6 @@ view model =
                     , timerView model.startTime model.time
                     , solvedView model.solved
                     ]
-
-                Inactive ->
-                    [ startButton ]
 
                 GameOver ->
                     [ gameOverView
