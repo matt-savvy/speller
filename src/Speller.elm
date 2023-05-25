@@ -44,6 +44,7 @@ type alias Model =
     , solved : Solved
     , score : Score
     , hardMode : Bool
+    , startTime : Maybe Time.Posix
     , time : Maybe Time.Posix
     , zone : Time.Zone
     }
@@ -61,6 +62,7 @@ init _ =
       , solved = Nothing
       , score = 0
       , hardMode = False
+      , startTime = Nothing
       , time = Nothing
       , zone = Time.utc
       }
@@ -120,7 +122,7 @@ update msg model =
                 ( word, nextSeed ) =
                     getTimeSeed time model.zone |> Random.initialSeed |> randomWord
             in
-            ( { model | time = Just time, word = word, seed = nextSeed }, Cmd.none )
+            ( { model | time = Just time, startTime = Just time, word = word, seed = nextSeed }, Cmd.none )
 
         NoOp ->
             ( model, Cmd.none )
