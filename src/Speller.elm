@@ -235,6 +235,7 @@ view model =
                 [ input [ css [ Tw.text_xl, Tw.tracking_widest ], id "text-input", autocomplete False, onInput InputChanged, value model.inputValue ] []
                 , feedbackToggle model.hardMode
                 ]
+            , timerView model.startTime model.time
             , solvedView model.solved
             ]
         ]
@@ -278,6 +279,28 @@ letterView classes letter =
 scoreView : Score -> Html Msg
 scoreView score =
     h2 [] [ text ("Score: " ++ String.fromInt score) ]
+
+
+timerView : Maybe Time.Posix -> Maybe Time.Posix -> Html Msg
+timerView startTime currentTime =
+    case ( startTime, currentTime ) of
+        ( Just startTimestamp, Just currentTimestamp ) ->
+            h2 [] [ text ("Time: " ++ String.fromInt (timeRemaining startTimestamp currentTimestamp)) ]
+
+        ( _, _ ) ->
+            text ""
+
+
+timeRemaining : Time.Posix -> Time.Posix -> Int
+timeRemaining startTime currentTime =
+    let
+        timeLimit =
+            120 * 1000
+
+        elapsed =
+            Time.posixToMillis currentTime - Time.posixToMillis startTime
+    in
+    (timeLimit - elapsed) // 1000
 
 
 solvedView : Solved -> Html msg
