@@ -40,6 +40,7 @@ type alias Score =
 type GameStatus
     = Inactive
     | Active
+    | GameOver
 
 
 type alias Model =
@@ -75,6 +76,11 @@ init _ =
       }
     , Cmd.batch [ focusInput, getTimeZone ]
     )
+
+
+timeLimit : Int
+timeLimit =
+    120 * 1000
 
 
 focusInput : Cmd Msg
@@ -137,7 +143,16 @@ update msg model =
             ( { model | time = Just time, startTime = Just time, word = word, seed = nextSeed }, Cmd.none )
 
         Tick time ->
-            ( { model | time = Just time }, Cmd.none )
+            case model.startTime of
+                Just startTime ->
+                    if (Time.posixToMillis startTime + timeLimit) < Time.posixToMillis time then
+                        ( { model | time = Just time, status = GameOver }, Cmd.none )
+
+                    else
+                        ( { model | time = Just time }, Cmd.none )
+
+                Nothing ->
+                    ( { model | time = Just time }, Cmd.none )
 
         NoOp ->
             ( model, Cmd.none )
@@ -253,6 +268,11 @@ view model =
 
                 Inactive ->
                     [ startButton ]
+
+                GameOver ->
+                    [ gameOverView
+                    , scoreView model.score
+                    ]
     in
     div [ css [ Tw.flex, Tw.justify_center ] ]
         [ div []
@@ -326,9 +346,6 @@ timerView startTime currentTime =
 timeRemaining : Time.Posix -> Time.Posix -> Int
 timeRemaining startTime currentTime =
     let
-        timeLimit =
-            120 * 1000
-
         elapsed =
             Time.posixToMillis currentTime - Time.posixToMillis startTime
     in
@@ -347,6 +364,12 @@ solvedView solved =
 
         Nothing ->
             div [] []
+
+
+gameOverView : Html Msg
+gameOverView =
+    h1 []
+        (List.map (letterView []) (String.split "" "game over"))
 
 
 
