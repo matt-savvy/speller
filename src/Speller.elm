@@ -64,14 +64,14 @@ focusInput =
     Task.attempt (\_ -> NoOp) (Dom.focus "text-input")
 
 
-getTime : Cmd Msg
-getTime =
-    Task.perform GetTime Time.now
-
-
 getTimeZone : Cmd Msg
 getTimeZone =
     Task.perform AdjustTimeZone Time.here
+
+
+getTime : Cmd Msg
+getTime =
+    Task.perform GetTime Time.now
 
 
 
@@ -82,8 +82,8 @@ type Msg
     = InputChanged String
     | Submit
     | HardModeChanged Bool
-    | GetTime Time.Posix
     | AdjustTimeZone Time.Zone
+    | GetTime Time.Posix
     | NoOp
 
 
@@ -103,15 +103,15 @@ update msg model =
         HardModeChanged nextFeedback ->
             ( { model | hardMode = nextFeedback }, Cmd.none )
 
+        AdjustTimeZone timeZone ->
+            ( { model | zone = timeZone }, getTime )
+
         GetTime time ->
             let
                 ( word, nextSeed ) =
                     getTimeSeed time model.zone |> Random.initialSeed |> randomWord
             in
             ( { model | time = time, word = word, seed = nextSeed }, Cmd.none )
-
-        AdjustTimeZone timeZone ->
-            ( { model | zone = timeZone }, getTime )
 
         NoOp ->
             ( model, Cmd.none )
