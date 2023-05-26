@@ -5,7 +5,7 @@ import Browser.Dom as Dom
 import Css
 import Feedback exposing (Feedback(..), getFeedback)
 import Html.Styled exposing (Html, button, div, form, h1, h2, input, label, p, span, text, toUnstyled)
-import Html.Styled.Attributes exposing (autocomplete, checked, css, id, type_, value)
+import Html.Styled.Attributes exposing (autocomplete, checked, css, disabled, id, type_, value)
 import Html.Styled.Events exposing (onCheck, onClick, onInput, onSubmit)
 import List
 import Random
@@ -275,6 +275,10 @@ view model =
 
                 GameOver ->
                     [ gameOverView
+                    , form [ onSubmit Submit ]
+                        [ input [ css [ Tw.text_xl, Tw.tracking_widest ], id "text-input", autocomplete False, disabled True, value model.inputValue ] []
+                        , feedbackToggle model.hardMode
+                        ]
                     , scoreView model.score
                     ]
     in
