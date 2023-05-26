@@ -84,9 +84,9 @@ timeLimit =
     120 * 1000
 
 
-focusInput : Cmd Msg
-focusInput =
-    Task.attempt (\_ -> NoOp) (Dom.focus "text-input")
+focus : String -> Cmd Msg
+focus id =
+    Task.attempt (\_ -> NoOp) (Dom.focus id)
 
 
 getTimeZone : Cmd Msg
@@ -141,7 +141,7 @@ update msg model =
                 ( word, nextSeed ) =
                     getTimeSeed time model.zone |> Random.initialSeed |> randomWord
             in
-            ( { model | status = Active, time = Just time, startTime = Just time, word = word, seed = nextSeed }, focusInput )
+            ( { model | status = Active, time = Just time, startTime = Just time, word = word, seed = nextSeed }, focus "text-input" )
 
         Tick time ->
             case model.startTime of
