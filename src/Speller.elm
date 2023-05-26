@@ -274,8 +274,9 @@ view model =
 
                 Active ->
                     [ wordView model
+                    , inputView model.inputValue
                     , form [ onSubmit Submit ]
-                        [ input [ css [ Tw.text_xl, Tw.tracking_widest ], id "text-input", autocomplete False, onInput InputChanged, value model.inputValue ] []
+                        [ input [ css [ Tw.text_xl, Tw.tracking_widest, Tw.mt_2 ], id "text-input", autocomplete False, onInput InputChanged, value model.inputValue ] []
                         , feedbackToggle model.hardMode
                         ]
                     , scoreView model.score
@@ -330,6 +331,11 @@ wordView model =
     else
         h1 []
             (List.map (letterView []) (String.split "" (getWord model.word)))
+
+
+inputView : String -> Html Msg
+inputView input =
+    h1 [ css [ Tw.h_4 ] ] (List.map (letterView []) (String.split "" input))
 
 
 feedbackLetterView : Feedback -> Html Msg
