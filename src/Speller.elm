@@ -134,7 +134,7 @@ update msg model =
             ( { model | hardMode = nextFeedback }, Cmd.none )
 
         AdjustTimeZone timeZone ->
-            ( { model | zone = timeZone, status = Ready }, Cmd.none )
+            ( { model | zone = timeZone, status = Ready }, focus "start-button" )
 
         GotStartTime time ->
             let
@@ -297,6 +297,7 @@ startButton =
             , Tw.rounded
             ]
         , onClick GotStart
+        , id "start-button"
         ]
         [ text "Start" ]
 
