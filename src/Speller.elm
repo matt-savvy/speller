@@ -146,7 +146,7 @@ update msg model =
         Tick time ->
             case model.startTime of
                 Just startTime ->
-                    if (Time.posixToMillis startTime + timeLimit) <= Time.posixToMillis time then
+                    if timeRemaining startTime time <= 0 then
                         ( { model | time = Just time, status = GameOver }, Cmd.none )
 
                     else
