@@ -18,9 +18,9 @@ suite =
             ]
         , describe "cleanValue"
             [ test "no whitespace" <|
-                \_ -> Expect.equal False (String.contains " " (cleanValue "lorem ipsum"))
+                \_ -> Expect.equal False (String.contains " " (cleanValue (createWord "loremipsum") "lorem ipsum"))
             , test "no uppercase" <|
-                \_ -> Expect.equal "lorem" (cleanValue "LoREM")
+                \_ -> Expect.equal "lorem" (cleanValue (createWord "lorem") "LoREM")
             ]
         , describe "getTimeSeed"
             [ test "values match for same day" <|

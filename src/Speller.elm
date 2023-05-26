@@ -9,6 +9,7 @@ import Html.Styled.Attributes exposing (autocomplete, checked, css, disabled, id
 import Html.Styled.Events exposing (onCheck, onClick, onInput, onSubmit)
 import List
 import Random
+import Set exposing (Set)
 import String
 import Tailwind.Utilities as Tw
 import Task
@@ -121,7 +122,7 @@ update msg model =
             ( model, getStartTime )
 
         InputChanged nextInputValue ->
-            ( { model | inputValue = cleanValue nextInputValue }, Cmd.none )
+            ( { model | inputValue = cleanValue model.word nextInputValue }, Cmd.none )
 
         Submit ->
             if isSolved model.word model.inputValue then
@@ -171,11 +172,20 @@ solvedUpdate model =
     { model | inputValue = "", solved = Just True, word = nextWord, seed = nextSeed, score = score }
 
 
-cleanValue : String -> String
-cleanValue input =
+cleanValue : Word -> String -> String
+cleanValue word input =
+    let
+        set : Set Char
+        set =
+            word |> getWord |> String.toList |> Set.fromList
+
+        letterFilter : Char -> Bool
+        letterFilter =
+            \char -> Set.member char set
+    in
     input
-        |> String.filter ((/=) ' ')
         |> String.toLower
+        |> String.filter letterFilter
 
 
 isSolved : Word -> String -> Bool
