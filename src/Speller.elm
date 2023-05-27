@@ -114,7 +114,6 @@ type ControlAction
 type Msg
     = GotStart
     | Control ControlAction
-    | Submit
     | KeyInput String
     | HardModeChanged Bool
     | AdjustTimeZone Time.Zone
@@ -142,20 +141,17 @@ update msg model =
                 Active ->
                     case action of
                         Enter ->
-                            update Submit model
+                            if isSolved model.word model.inputValue then
+                                ( solvedUpdate model, Cmd.none )
+
+                            else
+                                ( { model | solved = Just False }, Cmd.none )
 
                         Backspace ->
                             ( { model | inputValue = backspace model.inputValue }, Cmd.none )
 
                 _ ->
                     update NoOp model
-
-        Submit ->
-            if isSolved model.word model.inputValue then
-                ( solvedUpdate model, Cmd.none )
-
-            else
-                ( { model | solved = Just False }, Cmd.none )
 
         HardModeChanged nextFeedback ->
             ( { model | hardMode = nextFeedback }, Cmd.none )
