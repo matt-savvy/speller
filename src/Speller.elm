@@ -133,29 +133,26 @@ update msg model =
             ( model, getStartTime )
 
         KeyInput value ->
-            case model.status of
-                Active ->
-                    ( { model | inputValue = cleanValue model.word (model.inputValue ++ value) }, Cmd.none )
-
-                _ ->
-                    noOp
+            ( { model | inputValue = cleanValue model.word (model.inputValue ++ value) }
+                |> withActive model
+            , Cmd.none
+            )
 
         Control action ->
-            case model.status of
-                Active ->
+            let
+                nextModel =
                     case action of
                         Enter ->
                             if isSolved model.word model.inputValue then
-                                ( solvedUpdate model, Cmd.none )
+                                solvedUpdate model
 
                             else
-                                ( { model | solved = Just False }, Cmd.none )
+                                { model | solved = Just False }
 
                         Backspace ->
-                            ( { model | inputValue = backspace model.inputValue }, Cmd.none )
-
-                _ ->
-                    noOp
+                            { model | inputValue = backspace model.inputValue }
+            in
+            ( nextModel |> withActive model, Cmd.none )
 
         HardModeChanged nextFeedback ->
             ( { model | hardMode = nextFeedback }, Cmd.none )
@@ -184,6 +181,16 @@ update msg model =
 
         NoOp ->
             noOp
+
+
+withActive : Model -> Model -> Model
+withActive model result =
+    case model.status of
+        Active ->
+            result
+
+        _ ->
+            model
 
 
 backspace : String -> String
