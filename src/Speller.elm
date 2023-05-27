@@ -274,7 +274,7 @@ view model =
 
                 Active ->
                     [ wordView model
-                    , inputValueView model.inputValue
+                    , inputValueView model
                     , form [ onSubmit Submit ]
                         [ inputView model
                         , feedbackToggle model.hardMode
@@ -286,7 +286,7 @@ view model =
 
                 GameOver ->
                     [ gameOverView
-                    , inputValueView model.inputValue
+                    , inputValueView model
                     , form [ onSubmit Submit ]
                         [ inputView model ]
                     , scoreView model.score
@@ -337,9 +337,17 @@ wordView model =
             (List.map (letterView []) (String.split "" (getWord model.word)))
 
 
-inputValueView : String -> Html Msg
-inputValueView input =
-    h1 [ css [ Tw.h_4 ] ] (List.map (letterView []) (String.split "" input))
+inputValueView : Model -> Html Msg
+inputValueView model =
+    let
+        styles =
+            if model.status == GameOver then
+                [ Tw.opacity_25 ]
+
+            else
+                []
+    in
+    h1 [ css (styles ++ [ Tw.h_4 ]) ] (List.map (letterView []) (String.split "" model.inputValue))
 
 
 feedbackLetterView : Feedback -> Html Msg
