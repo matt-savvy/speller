@@ -288,9 +288,7 @@ view model =
                     [ gameOverView
                     , inputValueView model.inputValue
                     , form [ onSubmit Submit ]
-                        [ inputView model
-                        , feedbackToggle model.hardMode
-                        ]
+                        [ inputView model ]
                     , scoreView model.score
                     ]
     in
