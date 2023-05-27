@@ -276,7 +276,7 @@ view model =
                     [ wordView model
                     , inputValueView model.inputValue
                     , form [ onSubmit Submit ]
-                        [ input [ css [ Tw.text_xl, Tw.tracking_widest, Tw.mt_2 ], id "text-input", autocomplete False, onInput InputChanged, value model.inputValue ] []
+                        [ inputView model
                         , feedbackToggle model.hardMode
                         ]
                     , scoreView model.score
@@ -288,7 +288,7 @@ view model =
                     [ gameOverView
                     , inputValueView model.inputValue
                     , form [ onSubmit Submit ]
-                        [ input [ css [ Tw.text_xl, Tw.tracking_widest ], id "text-input", autocomplete False, disabled True, value model.inputValue ] []
+                        [ inputView model
                         , feedbackToggle model.hardMode
                         ]
                     , scoreView model.score
@@ -298,6 +298,11 @@ view model =
         [ div []
             (p [ css [ Tw.text_lg ] ] [ text "Alphabetize the word and hit enter" ] :: body)
         ]
+
+
+inputView : Model -> Html Msg
+inputView model =
+    input [ css [ Tw.text_xl, Tw.tracking_widest, Tw.mt_2 ], id "text-input", disabled (model.status == GameOver), autocomplete False, onInput InputChanged, value model.inputValue ] []
 
 
 startButton : Html Msg
