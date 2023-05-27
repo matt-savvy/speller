@@ -6,8 +6,8 @@ import Browser.Events exposing (onKeyDown)
 import Css
 import Feedback exposing (Feedback(..), getFeedback)
 import Html.Styled exposing (Html, button, div, form, h1, h2, input, label, p, span, text, toUnstyled)
-import Html.Styled.Attributes exposing (autocomplete, checked, css, disabled, id, type_, value)
-import Html.Styled.Events exposing (onCheck, onClick, onInput, onSubmit)
+import Html.Styled.Attributes exposing (checked, css, id, type_, value)
+import Html.Styled.Events exposing (onCheck, onClick)
 import Json.Decode as Decode
 import List
 import Random
@@ -113,7 +113,6 @@ type ControlAction
 
 type Msg
     = GotStart
-    | InputChanged String
     | Control ControlAction
     | Submit
     | KeyInput String
@@ -129,9 +128,6 @@ update msg model =
     case msg of
         GotStart ->
             ( model, getStartTime )
-
-        InputChanged nextInputValue ->
-            ( { model | inputValue = cleanValue model.word nextInputValue }, Cmd.none )
 
         KeyInput value ->
             case model.status of
@@ -336,10 +332,7 @@ view model =
                 Active ->
                     [ wordView model
                     , inputValueView model
-                    , form [ onSubmit Submit ]
-                        [ inputView model
-                        , feedbackToggle model.hardMode
-                        ]
+                    , form [] [ feedbackToggle model.hardMode ]
                     , scoreView model.score
                     , timerView model.startTime model.time
                     , solvedView model.solved
@@ -348,8 +341,6 @@ view model =
                 GameOver ->
                     [ gameOverView
                     , inputValueView model
-                    , form [ onSubmit Submit ]
-                        [ inputView model ]
                     , scoreView model.score
                     ]
     in
@@ -357,11 +348,6 @@ view model =
         [ div []
             (p [ css [ Tw.text_lg ] ] [ text "Alphabetize the word and hit enter" ] :: body)
         ]
-
-
-inputView : Model -> Html Msg
-inputView model =
-    input [ css [ Tw.text_xl, Tw.tracking_widest, Tw.mt_2 ], id "text-input", disabled (model.status == GameOver), autocomplete False, onInput InputChanged, value model.inputValue ] []
 
 
 startButton : Html Msg
