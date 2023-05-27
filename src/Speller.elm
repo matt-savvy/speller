@@ -2,11 +2,13 @@ module Speller exposing (cleanValue, getTimeSeed, isSolved, main)
 
 import Browser
 import Browser.Dom as Dom
+import Browser.Events exposing (onKeyDown)
 import Css
 import Feedback exposing (Feedback(..), getFeedback)
 import Html.Styled exposing (Html, button, div, form, h1, h2, input, label, p, span, text, toUnstyled)
 import Html.Styled.Attributes exposing (autocomplete, checked, css, disabled, id, type_, value)
 import Html.Styled.Events exposing (onCheck, onClick, onInput, onSubmit)
+import Json.Decode as Decode
 import List
 import Random
 import Set exposing (Set)
@@ -104,9 +106,14 @@ getStartTime =
 -- UPDATE
 
 
+type ControlAction
+    = Enter
+
+
 type Msg
     = GotStart
     | InputChanged String
+    | Control ControlAction
     | Submit
     | HardModeChanged Bool
     | AdjustTimeZone Time.Zone
@@ -123,6 +130,16 @@ update msg model =
 
         InputChanged nextInputValue ->
             ( { model | inputValue = cleanValue model.word nextInputValue }, Cmd.none )
+
+        Control action ->
+            case model.status of
+                Active ->
+                    case action of
+                        Enter ->
+                            update Submit model
+
+                _ ->
+                    update NoOp model
 
         Submit ->
             if isSolved model.word model.inputValue then
@@ -254,7 +271,25 @@ monthToInt month =
 
 subscriptions : Model -> Sub Msg
 subscriptions _ =
-    Time.every 1000 Tick
+    Sub.batch
+        [ Time.every 1000 Tick
+        , onKeyDown keyDecoder
+        ]
+
+
+keyDecoder : Decode.Decoder Msg
+keyDecoder =
+    Decode.map toKey (Decode.field "key" Decode.string)
+
+
+toKey : String -> Msg
+toKey string =
+    case string of
+        "Enter" ->
+            Control Enter
+
+        _ ->
+            NoOp
 
 
 
