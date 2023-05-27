@@ -108,6 +108,7 @@ getStartTime =
 
 type ControlAction
     = Enter
+    | Backspace
 
 
 type Msg
@@ -137,6 +138,9 @@ update msg model =
                     case action of
                         Enter ->
                             update Submit model
+
+                        Backspace ->
+                            ( { model | inputValue = backspace model.inputValue }, Cmd.none )
 
                 _ ->
                     update NoOp model
@@ -175,6 +179,11 @@ update msg model =
 
         NoOp ->
             ( model, Cmd.none )
+
+
+backspace : String -> String
+backspace string =
+    String.slice 0 -1 string
 
 
 solvedUpdate : Model -> Model
@@ -287,6 +296,9 @@ toKey string =
     case string of
         "Enter" ->
             Control Enter
+
+        "Backspace" ->
+            Control Backspace
 
         _ ->
             NoOp
