@@ -1,6 +1,7 @@
-module Word exposing (Word, alphabetize, createWord, getSolution, getWord, randomWord)
+module Word exposing (Word, alphabetize, awesomeWords, coolWords, createWord, getSolution, getWord, randomWord, selfSolved)
 
 import Random
+import Set
 import Words exposing (words)
 
 
@@ -38,3 +39,30 @@ randomWord seed =
             Random.step wordGenerator seed
     in
     ( createWord word, nextSeed )
+
+
+wordsSet : Set.Set String
+wordsSet =
+    Set.fromList words
+
+
+solvedWords : List Word
+solvedWords =
+    words |> List.map createWord
+
+
+coolWords : List Word
+coolWords =
+    solvedWords
+        |> List.filter (selfSolved >> not)
+        |> List.filter (\solvedWord -> Set.member (getSolution solvedWord) wordsSet)
+
+
+awesomeWords : List Word
+awesomeWords =
+    solvedWords |> List.filter selfSolved
+
+
+selfSolved : Word -> Bool
+selfSolved (Word word solution) =
+    word == solution
