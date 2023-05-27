@@ -274,7 +274,7 @@ view model =
 
                 Active ->
                     [ wordView model
-                    , inputView model.inputValue
+                    , inputValueView model.inputValue
                     , form [ onSubmit Submit ]
                         [ input [ css [ Tw.text_xl, Tw.tracking_widest, Tw.mt_2 ], id "text-input", autocomplete False, onInput InputChanged, value model.inputValue ] []
                         , feedbackToggle model.hardMode
@@ -333,8 +333,8 @@ wordView model =
             (List.map (letterView []) (String.split "" (getWord model.word)))
 
 
-inputView : String -> Html Msg
-inputView input =
+inputValueView : String -> Html Msg
+inputValueView input =
     h1 [ css [ Tw.h_4 ] ] (List.map (letterView []) (String.split "" input))
 
 
