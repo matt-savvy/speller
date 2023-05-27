@@ -124,6 +124,10 @@ type Msg
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
+    let
+        noOp =
+            ( model, Cmd.none )
+    in
     case msg of
         GotStart ->
             ( model, getStartTime )
@@ -134,7 +138,7 @@ update msg model =
                     ( { model | inputValue = cleanValue model.word (model.inputValue ++ value) }, Cmd.none )
 
                 _ ->
-                    update NoOp model
+                    noOp
 
         Control action ->
             case model.status of
@@ -151,7 +155,7 @@ update msg model =
                             ( { model | inputValue = backspace model.inputValue }, Cmd.none )
 
                 _ ->
-                    update NoOp model
+                    noOp
 
         HardModeChanged nextFeedback ->
             ( { model | hardMode = nextFeedback }, Cmd.none )
@@ -179,7 +183,7 @@ update msg model =
                     ( { model | time = Just time }, Cmd.none )
 
         NoOp ->
-            ( model, Cmd.none )
+            noOp
 
 
 backspace : String -> String
