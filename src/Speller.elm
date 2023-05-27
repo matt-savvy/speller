@@ -286,6 +286,7 @@ view model =
 
                 GameOver ->
                     [ gameOverView
+                    , inputValueView model.inputValue
                     , form [ onSubmit Submit ]
                         [ input [ css [ Tw.text_xl, Tw.tracking_widest ], id "text-input", autocomplete False, disabled True, value model.inputValue ] []
                         , feedbackToggle model.hardMode
