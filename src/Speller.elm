@@ -116,6 +116,7 @@ type Msg
     | InputChanged String
     | Control ControlAction
     | Submit
+    | KeyInput String
     | HardModeChanged Bool
     | AdjustTimeZone Time.Zone
     | GotStartTime Time.Posix
@@ -131,6 +132,14 @@ update msg model =
 
         InputChanged nextInputValue ->
             ( { model | inputValue = cleanValue model.word nextInputValue }, Cmd.none )
+
+        KeyInput value ->
+            case model.status of
+                Active ->
+                    ( { model | inputValue = cleanValue model.word (model.inputValue ++ value) }, Cmd.none )
+
+                _ ->
+                    update NoOp model
 
         Control action ->
             case model.status of
@@ -301,7 +310,12 @@ toKey string =
             Control Backspace
 
         _ ->
-            NoOp
+            case String.uncons string of
+                Just ( _, "" ) ->
+                    KeyInput string
+
+                _ ->
+                    NoOp
 
 
 
