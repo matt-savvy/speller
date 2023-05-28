@@ -3,6 +3,7 @@ module Speller exposing (cleanValue, getTimeSeed, isSolved, isSolvedLength, main
 import Browser
 import Browser.Dom as Dom
 import Css
+import Css.Global
 import Feedback exposing (Feedback(..), getFeedback)
 import Html.Styled exposing (Html, button, div, form, h1, h2, input, label, p, span, text, toUnstyled)
 import Html.Styled.Attributes exposing (autocomplete, checked, css, disabled, id, type_, value)
@@ -308,9 +309,12 @@ view model =
                     , scoreView model.score
                     ]
     in
-    div [ css [ Tw.flex, Tw.justify_center ] ]
-        [ div []
-            (p [ css [ Tw.text_lg ] ] [ text "Alphabetize the word" ] :: body)
+    div []
+        [ Css.Global.global Tw.globalStyles
+        , div [ css [ Tw.flex, Tw.justify_center ] ]
+            [ div []
+                (p [ css [ Tw.text_lg ] ] [ text "Alphabetize the word" ] :: body)
+            ]
         ]
 
 
