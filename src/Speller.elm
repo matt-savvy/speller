@@ -82,7 +82,7 @@ init _ =
 
 timeLimit : Int
 timeLimit =
-    120 * 1000
+    60 * 1000
 
 
 focus : String -> Cmd Msg
