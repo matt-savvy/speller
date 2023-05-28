@@ -122,7 +122,18 @@ update msg model =
             ( model, getStartTime )
 
         InputChanged nextInputValue ->
-            ( { model | inputValue = cleanValue model.word nextInputValue }, Cmd.none )
+            let
+                cleanedValue =
+                    cleanValue model.word nextInputValue
+
+                nextModel =
+                    { model | inputValue = cleanedValue }
+            in
+            if isSolvedLength model.word cleanedValue then
+                update Submit nextModel
+
+            else
+                ( nextModel, Cmd.none )
 
         Submit ->
             if isSolved model.word model.inputValue then
@@ -299,7 +310,7 @@ view model =
     in
     div [ css [ Tw.flex, Tw.justify_center ] ]
         [ div []
-            (p [ css [ Tw.text_lg ] ] [ text "Alphabetize the word and hit enter" ] :: body)
+            (p [ css [ Tw.text_lg ] ] [ text "Alphabetize the word" ] :: body)
         ]
 
 
