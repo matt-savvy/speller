@@ -293,7 +293,7 @@ view model =
                     , inputValueView model
                     , form [ onSubmit Submit ]
                         [ inputView model
-                        , feedbackToggle model.hardMode
+                        , hardModeToggle model.hardMode
                         ]
                     , scoreView model.score
                     , timerView model.startTime model.time
@@ -333,11 +333,11 @@ startButton =
         [ text "Start" ]
 
 
-feedbackToggle : Bool -> Html Msg
-feedbackToggle feedback =
+hardModeToggle : Bool -> Html Msg
+hardModeToggle hardMode =
     div [ css [ Tw.my_4 ] ]
         [ label []
-            [ input [ type_ "checkbox", checked feedback, onCheck HardModeChanged ] []
+            [ input [ type_ "checkbox", checked hardMode, onCheck HardModeChanged ] []
             , text "Hard mode"
             ]
         ]
@@ -346,7 +346,7 @@ feedbackToggle feedback =
 wordView : Model -> Html Msg
 wordView model =
     if not model.hardMode then
-        h1 [] (List.map feedbackLetterView (getFeedback (getWord model.word) model.inputValue))
+        h1 [ id "word" ] (List.map feedbackLetterView (getFeedback (getWord model.word) model.inputValue))
 
     else
         h1 []
