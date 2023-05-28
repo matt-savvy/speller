@@ -1,4 +1,4 @@
-module Speller exposing (cleanValue, getTimeSeed, isSolved, main)
+module Speller exposing (cleanValue, getTimeSeed, isSolved, isSolvedLength, main)
 
 import Browser
 import Browser.Dom as Dom
@@ -186,6 +186,11 @@ cleanValue word input =
     input
         |> String.toLower
         |> String.filter letterFilter
+
+
+isSolvedLength : Word -> String -> Bool
+isSolvedLength word input =
+    String.length (getWord word) == String.length input
 
 
 isSolved : Word -> String -> Bool

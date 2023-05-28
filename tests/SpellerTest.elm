@@ -1,7 +1,7 @@
 module SpellerTest exposing (..)
 
 import Expect
-import Speller exposing (cleanValue, getTimeSeed, isSolved)
+import Speller exposing (cleanValue, getTimeSeed, isSolved, isSolvedLength)
 import Test exposing (..)
 import Time exposing (millisToPosix, utc)
 import Word exposing (createWord)
@@ -15,6 +15,12 @@ suite =
                 \_ -> Expect.equal True (isSolved (createWord "fabric") "abcfir")
             , test "an incorrect answer is False" <|
                 \_ -> Expect.equal False (isSolved (createWord "fabric") "firabc")
+            ]
+        , describe "isSolvedLength"
+            [ test "same amount of letters is True" <|
+                \_ -> Expect.equal True (isSolvedLength (createWord "fabric") "abcifr")
+            , test "different amount of letters is False" <|
+                \_ -> Expect.equal False (isSolvedLength (createWord "fabric") "bcifr")
             ]
         , describe "cleanValue"
             [ test "no whitespace" <|
