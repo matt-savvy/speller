@@ -311,7 +311,7 @@ view model =
     in
     div []
         [ Css.Global.global Tw.globalStyles
-        , div [ css [ Tw.flex, Tw.justify_center, Tw.text_5xl ] ]
+        , div [ css [ Tw.mt_12, Tw.flex, Tw.justify_center, Tw.text_5xl ] ]
             [ div []
                 (p [] [ text "Alphabetize the word" ] :: body)
             ]
