@@ -2,7 +2,7 @@ module Speller exposing (cleanValue, getTimeSeed, isSolved, isSolvedLength, main
 
 import Browser
 import Browser.Dom as Dom
-import Css
+import Css exposing (fontFamilies, fontFamily, monospace)
 import Css.Global
 import Feedback exposing (Feedback(..), getFeedback)
 import Html.Styled exposing (Html, button, div, form, h2, input, label, p, span, text, toUnstyled)
@@ -382,7 +382,7 @@ feedbackLetterView feedback =
 
 letterView : List Css.Style -> String -> Html Msg
 letterView classes letter =
-    span [ css ([ Tw.mx_2, Tw.uppercase, Tw.text_6xl ] ++ classes) ] [ text letter ]
+    span [ css ([ Tw.mx_2, Tw.uppercase, Tw.text_6xl, fontFamilies [ "courier", .value monospace ] ] ++ classes) ] [ text letter ]
 
 
 scoreView : Score -> Html Msg
