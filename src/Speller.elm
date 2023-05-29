@@ -313,9 +313,14 @@ view model =
         [ Css.Global.global Tw.globalStyles
         , div [ css [ Tw.mt_12, Tw.flex, Tw.justify_center, Tw.text_5xl ] ]
             [ div []
-                (p [] [ text "Alphabetize the word" ] :: body)
+                (instructions :: body)
             ]
         ]
+
+
+instructions : Html Msg
+instructions =
+    p [] [ text "Alphabetize the word" ]
 
 
 inputView : Model -> Html Msg
