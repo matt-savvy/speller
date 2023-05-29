@@ -2619,7 +2619,6 @@ words =
     , "document"
     , "documentary"
     , "documentation"
-    , "documentcreatetextnode"
     , "documented"
     , "documents"
     , "dod"
