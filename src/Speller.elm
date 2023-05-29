@@ -291,8 +291,7 @@ view model =
 
                 Active ->
                     [ instructions
-                    , wordView model
-                    , inputValueView model
+                    , div [] [ wordView model, inputValueView model ]
                     , form [ onSubmit Submit ]
                         [ inputView model
                         , hardModeToggle model.hardMode
@@ -303,8 +302,7 @@ view model =
                     ]
 
                 GameOver ->
-                    [ gameOverView
-                    , inputValueView model
+                    [ div [] [ gameOverView, inputValueView model ]
                     , form [ onSubmit Submit ]
                         [ inputView model ]
                     , scoreView model.score
