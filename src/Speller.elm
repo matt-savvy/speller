@@ -5,7 +5,7 @@ import Browser.Dom as Dom
 import Css
 import Css.Global
 import Feedback exposing (Feedback(..), getFeedback)
-import Html.Styled exposing (Html, button, div, form, h1, h2, input, label, p, span, text, toUnstyled)
+import Html.Styled exposing (Html, button, div, form, h2, input, label, p, span, text, toUnstyled)
 import Html.Styled.Attributes exposing (autocomplete, checked, css, disabled, id, type_, value)
 import Html.Styled.Events exposing (onCheck, onClick, onInput, onSubmit)
 import List
@@ -311,9 +311,9 @@ view model =
     in
     div []
         [ Css.Global.global Tw.globalStyles
-        , div [ css [ Tw.flex, Tw.justify_center ] ]
+        , div [ css [ Tw.flex, Tw.justify_center, Tw.text_5xl ] ]
             [ div []
-                (p [ css [ Tw.text_lg ] ] [ text "Alphabetize the word" ] :: body)
+                (p [] [ text "Alphabetize the word" ] :: body)
             ]
         ]
 
@@ -350,10 +350,10 @@ hardModeToggle hardMode =
 wordView : Model -> Html Msg
 wordView model =
     if not model.hardMode then
-        h1 [ id "word" ] (List.map feedbackLetterView (getFeedback (getWord model.word) model.inputValue))
+        div [ css [ Tw.h_14 ], id "word" ] (List.map feedbackLetterView (getFeedback (getWord model.word) model.inputValue))
 
     else
-        h1 []
+        div [ css [ Tw.h_14 ] ]
             (List.map (letterView []) (String.split "" (getWord model.word)))
 
 
@@ -367,7 +367,7 @@ inputValueView model =
             else
                 []
     in
-    h1 [ css (styles ++ [ Tw.h_4 ]) ] (List.map (letterView []) (String.split "" model.inputValue))
+    div [ css (styles ++ [ Tw.h_14 ]) ] (List.map (letterView []) (String.split "" model.inputValue))
 
 
 feedbackLetterView : Feedback -> Html Msg
@@ -382,7 +382,7 @@ feedbackLetterView feedback =
 
 letterView : List Css.Style -> String -> Html Msg
 letterView classes letter =
-    span [ css ([ Tw.mx_2, Tw.uppercase ] ++ classes) ] [ text letter ]
+    span [ css ([ Tw.mx_2, Tw.uppercase, Tw.text_6xl ] ++ classes) ] [ text letter ]
 
 
 scoreView : Score -> Html Msg
@@ -425,7 +425,7 @@ solvedView solved =
 
 gameOverView : Html Msg
 gameOverView =
-    h1 []
+    div []
         (List.map (letterView []) (String.split "" "game over"))
 
 
