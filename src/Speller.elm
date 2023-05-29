@@ -296,8 +296,6 @@ view model =
                         [ inputView model
                         , hardModeToggle model.hardMode
                         ]
-                    , scoreView model.score
-                    , timerView model.startTime model.time
                     , solvedView model.solved
                     ]
 
@@ -305,21 +303,41 @@ view model =
                     [ div [] [ gameOverView, inputValueView model ]
                     , form [ onSubmit Submit ]
                         [ inputView model ]
-                    , scoreView model.score
                     ]
     in
     div []
         [ Css.Global.global Tw.globalStyles
-        , div [ css [ Tw.mt_12, Tw.flex, Tw.justify_center, Tw.text_5xl ] ]
-            [ div []
-                [ div [] body ]
-            ]
+        , div [ css [ Tw.flex, Tw.flex_col, Tw.items_center, Tw.text_5xl, Tw.w_screen, Tw.h_screen ] ]
+            (headerView model :: body)
         ]
 
 
 instructions : Html Msg
 instructions =
     p [] [ text "Alphabetize the word" ]
+
+
+headerView : Model -> Html Msg
+headerView model =
+    let
+        items =
+            case model.status of
+                Ready ->
+                    [ scoreView model.score ]
+
+                Active ->
+                    [ scoreView model.score
+                    , timerView model.startTime model.time
+                    ]
+
+                GameOver ->
+                    [ scoreView model.score ]
+
+                _ ->
+                    []
+    in
+    div [ css [ Tw.flex, Tw.flex_row, Tw.justify_between, Tw.w_full ] ]
+        items
 
 
 inputView : Model -> Html Msg
