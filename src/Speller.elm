@@ -320,7 +320,7 @@ view model =
 
 inputView : Model -> Html Msg
 inputView model =
-    input [ css [ Tw.text_xl, Tw.tracking_widest, Tw.mt_2 ], id "text-input", disabled (model.status == GameOver), autocomplete False, onInput InputChanged, value model.inputValue ] []
+    input [ css [ Tw.text_xl, Tw.tracking_widest, Tw.mt_2, Tw.uppercase ], id "text-input", disabled (model.status == GameOver), autocomplete False, onInput InputChanged, value model.inputValue ] []
 
 
 startButton : Html Msg
@@ -382,7 +382,7 @@ feedbackLetterView feedback =
 
 letterView : List Css.Style -> String -> Html Msg
 letterView classes letter =
-    span [ css (Tw.mx_2 :: classes) ] [ text letter ]
+    span [ css ([ Tw.mx_2, Tw.uppercase ] ++ classes) ] [ text letter ]
 
 
 scoreView : Score -> Html Msg
