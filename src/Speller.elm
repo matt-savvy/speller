@@ -2,7 +2,7 @@ module Speller exposing (cleanValue, getTimeSeed, isSolved, isSolvedLength, main
 
 import Browser
 import Browser.Dom as Dom
-import Css exposing (fontFamilies, fontFamily, monospace)
+import Css exposing (fontFamilies, monospace)
 import Css.Global
 import Feedback exposing (Feedback(..), getFeedback)
 import Html.Styled exposing (Html, button, div, form, h2, input, label, p, span, text, toUnstyled)
