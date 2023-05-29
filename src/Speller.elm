@@ -287,10 +287,11 @@ view model =
                     []
 
                 Ready ->
-                    [ startButton ]
+                    [ instructions, startButton ]
 
                 Active ->
-                    [ wordView model
+                    [ instructions
+                    , wordView model
                     , inputValueView model
                     , form [ onSubmit Submit ]
                         [ inputView model
@@ -313,7 +314,7 @@ view model =
         [ Css.Global.global Tw.globalStyles
         , div [ css [ Tw.mt_12, Tw.flex, Tw.justify_center, Tw.text_5xl ] ]
             [ div []
-                (instructions :: body)
+                [ div [] body ]
             ]
         ]
 
