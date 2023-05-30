@@ -287,20 +287,21 @@ view model =
                     []
 
                 Ready ->
-                    [ instructions, startButton ]
+                    [ div [ css [ Tw.h_full, Tw.flex, Tw.flex_col, Tw.content_center, Tw.justify_start ] ] [ instructions, startButton ] ]
 
                 Active ->
-                    [ instructions
-                    , div [] [ wordView model, inputValueView model ]
+                    [ div [ css [ Tw.h_full, Tw.flex, Tw.flex_col, Tw.content_center, Tw.justify_start ] ]
+                        [ instructions
+                        , div [ css [ Tw.ml_auto, Tw.mr_auto ] ] [ wordView model, inputValueView model, solvedView model.solved ]
+                        ]
                     , form [ onSubmit Submit ]
                         [ inputView model
                         , hardModeToggle model.hardMode
                         ]
-                    , solvedView model.solved
                     ]
 
                 GameOver ->
-                    [ div [] [ gameOverView, inputValueView model ]
+                    [ div [ css [ Tw.h_full ] ] [ div [] [ gameOverView, inputValueView model ] ]
                     , form [ onSubmit Submit ]
                         [ inputView model ]
                     ]
