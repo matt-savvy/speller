@@ -5,7 +5,7 @@ import Browser.Dom as Dom
 import Css exposing (fontFamilies, monospace)
 import Css.Global
 import Feedback exposing (Feedback(..), getFeedback)
-import Html.Styled exposing (Html, button, div, form, h2, input, label, p, span, text, toUnstyled)
+import Html.Styled exposing (Html, button, div, form, h2, input, label, span, text, toUnstyled)
 import Html.Styled.Attributes exposing (autocomplete, checked, css, disabled, id, type_, value)
 import Html.Styled.Events exposing (onCheck, onClick, onInput, onSubmit)
 import List
@@ -315,7 +315,7 @@ view model =
 
 instructions : Html Msg
 instructions =
-    p [] [ text "Alphabetize the word" ]
+    div [ css [ Tw.ml_auto, Tw.mr_auto ] ] [ text "Alphabetize the word" ]
 
 
 headerView : Model -> Html Msg
