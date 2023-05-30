@@ -12,6 +12,7 @@ import List
 import Random
 import Set exposing (Set)
 import String
+import Tailwind.Theme as Tw
 import Tailwind.Utilities as Tw
 import Task
 import Time
@@ -343,7 +344,29 @@ headerView model =
 
 inputView : Model -> Html Msg
 inputView model =
-    input [ css [ Tw.text_xl, Tw.tracking_widest, Tw.mt_2, Tw.uppercase ], id "text-input", disabled (model.status == GameOver), autocomplete False, onInput InputChanged, value model.inputValue ] []
+    input
+        [ css
+            [ Tw.text_xl
+            , Tw.tracking_widest
+            , Tw.mt_2
+            , Tw.uppercase
+            , Tw.block
+            , Tw.rounded_full
+            , Tw.border_2
+            , Tw.border_color Tw.gray_400
+            , Tw.px_4
+            , Tw.py_2
+            , Tw.text_color Tw.gray_900
+            ]
+        , id "text-input"
+        , disabled
+            (model.status == GameOver)
+        , autocomplete False
+        , onInput InputChanged
+        , value
+            model.inputValue
+        ]
+        []
 
 
 startButton : Html Msg
