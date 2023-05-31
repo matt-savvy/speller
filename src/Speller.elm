@@ -439,11 +439,18 @@ scoreView score =
     h2 [] [ text ("Score: " ++ String.fromInt score) ]
 
 
+formatTimeRemaining : Int -> String
+formatTimeRemaining remainingTime =
+    remainingTime
+        |> String.fromInt
+        |> String.padLeft 2 '0'
+
+
 timerView : Maybe Time.Posix -> Maybe Time.Posix -> Html Msg
 timerView startTime currentTime =
     case ( startTime, currentTime ) of
         ( Just startTimestamp, Just currentTimestamp ) ->
-            h2 [] [ text ("Time: " ++ String.fromInt (timeRemaining startTimestamp currentTimestamp)) ]
+            h2 [] [ text ("Time: " ++ formatTimeRemaining (timeRemaining startTimestamp currentTimestamp)) ]
 
         ( _, _ ) ->
             text ""
