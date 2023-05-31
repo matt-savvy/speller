@@ -467,13 +467,17 @@ timeRemaining startTime currentTime =
 
 solvedView : Solved -> Html msg
 solvedView solved =
+    let
+        style =
+            css [ Tw.ml_auto, Tw.mr_auto, Tw.w_fit ]
+    in
     case solved of
         Just result ->
             if result then
-                div [] [ text "correct!" ]
+                div [ style ] [ text "correct!" ]
 
             else
-                div [] [ text "incorrect!" ]
+                div [ style ] [ text "incorrect!" ]
 
         Nothing ->
             div [] []
