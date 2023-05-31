@@ -12,6 +12,7 @@ import List
 import Random
 import Set exposing (Set)
 import String
+import Tailwind.Breakpoints as Breakpoints
 import Tailwind.Theme as Tw
 import Tailwind.Utilities as Tw
 import Task
@@ -25,7 +26,7 @@ import Word exposing (Word, getSolution, getWord, randomWord)
 
 randomWordOffset : Int
 randomWordOffset =
-    9
+    8
 
 
 
@@ -288,10 +289,12 @@ view model =
                     []
 
                 Ready ->
-                    [ div [ css [ Tw.h_full, Tw.flex, Tw.flex_col, Tw.content_center, Tw.justify_start ] ] [ instructions, startButton ] ]
+                    [ div [ css [ Breakpoints.lg [ Tw.h_full ], Tw.flex, Tw.flex_col, Tw.content_center, Tw.justify_start ] ]
+                        [ instructions, startButton ]
+                    ]
 
                 Active ->
-                    [ div [ css [ Tw.h_full, Tw.flex, Tw.flex_col, Tw.content_center, Tw.justify_start ] ]
+                    [ div [ css [ Breakpoints.lg [ Tw.h_full ], Tw.flex, Tw.flex_col, Tw.content_center, Tw.justify_start ] ]
                         [ instructions
                         , div [ css [ Tw.ml_auto, Tw.mr_auto ] ] [ wordView model, inputValueView model, solvedView model.solved ]
                         ]
