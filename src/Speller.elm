@@ -2,7 +2,7 @@ module Speller exposing (cleanValue, getTimeSeed, isSolved, isSolvedLength, main
 
 import Browser
 import Browser.Dom as Dom
-import Css exposing (fontFamilies, monospace)
+import Css exposing (fontFamilies, minWidth, monospace, px)
 import Css.Global
 import Feedback exposing (Feedback(..), getFeedback)
 import Html.Styled exposing (Html, button, div, form, h2, input, label, span, text, toUnstyled)
@@ -341,7 +341,7 @@ headerView model =
                 _ ->
                     []
     in
-    div [ css [ Tw.flex, Tw.flex_row, Tw.justify_between, Tw.w_full ] ]
+    div [ css [ Tw.flex, Tw.flex_row, Tw.justify_between, Tw.pt_2, Tw.px_2, minWidth (px 450), Breakpoints.lg [ Tw.pt_4, Tw.px_4, Tw.w_full ] ] ]
         items
 
 
