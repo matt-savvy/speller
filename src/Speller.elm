@@ -436,7 +436,7 @@ letterView classes letter =
 
 scoreView : Score -> Html Msg
 scoreView score =
-    h2 [] [ text ("Score: " ++ String.fromInt score) ]
+    h2 [ css [ Tw.uppercase, fontFamilies [ "courier", .value monospace ] ] ] [ text ("Score:" ++ String.fromInt score) ]
 
 
 formatTimeRemaining : Int -> String
