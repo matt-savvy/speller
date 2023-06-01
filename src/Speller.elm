@@ -189,9 +189,13 @@ solvedUpdate model =
 cleanValue : Word -> String -> String
 cleanValue word input =
     let
+        wordStr : String
+        wordStr =
+            getWord word
+
         set : Set Char
         set =
-            word |> getWord |> String.toList |> Set.fromList
+            wordStr |> String.toList |> Set.fromList
 
         letterFilter : Char -> Bool
         letterFilter =
@@ -200,6 +204,7 @@ cleanValue word input =
     input
         |> String.toLower
         |> String.filter letterFilter
+        |> String.slice 0 (String.length wordStr)
 
 
 isSolvedLength : Word -> String -> Bool

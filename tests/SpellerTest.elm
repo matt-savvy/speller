@@ -27,6 +27,10 @@ suite =
                 \_ -> Expect.equal False (String.contains " " (cleanValue (createWord "loremipsum") "lorem ipsum"))
             , test "no uppercase" <|
                 \_ -> Expect.equal "lorem" (cleanValue (createWord "lorem") "LoREM")
+            , test "length can't be longer than solution word" <|
+                \_ -> Expect.equal "abciff" (cleanValue (createWord "fabric") "abciffr")
+            , test "length cant be shorter than solution word" <|
+                \_ -> Expect.equal "abc" (cleanValue (createWord "fabric") "abc")
             ]
         , describe "getTimeSeed"
             [ test "values match for same day" <|
