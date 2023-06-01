@@ -308,7 +308,8 @@ view model =
                     ]
 
                 GameOver ->
-                    [ div [ css [ Tw.h_full ] ] [ div [] [ gameOverView, inputValueView model ] ]
+                    [ div [ css [ Breakpoints.lg [ Tw.h_full ], Tw.flex, Tw.flex_col, Tw.content_center, Tw.justify_start ] ]
+                        [ div [ css [ Tw.ml_auto, Tw.mr_auto ] ] [ gameOverView, inputValueView model ] ]
                     , form [ onSubmit Submit ]
                         [ inputView model ]
                     ]
