@@ -295,7 +295,7 @@ view model =
 
                 Ready ->
                     [ div [ css [ Breakpoints.lg [ Tw.h_full ], Tw.flex, Tw.flex_col, Tw.content_center, Tw.justify_start ] ]
-                        [ instructions, startButton ]
+                        [ instructions, startButton, hardModeToggle model.hardMode ]
                     ]
 
                 Active ->
@@ -304,9 +304,7 @@ view model =
                         , div [ css [ Tw.ml_auto, Tw.mr_auto ] ] [ wordView model, inputValueView model, solvedView model.solved ]
                         ]
                     , form [ onSubmit Submit ]
-                        [ inputView model
-                        , hardModeToggle model.hardMode
-                        ]
+                        [ inputView model ]
                     ]
 
                 GameOver ->
