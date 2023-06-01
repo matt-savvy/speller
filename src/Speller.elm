@@ -179,11 +179,13 @@ solvedUpdate model =
     let
         ( nextWord, nextSeed ) =
             randomWord model.seed
-
-        score =
-            model.score + 1
     in
-    { model | inputValue = "", solved = Just True, word = nextWord, seed = nextSeed, score = score }
+    { model | inputValue = "", solved = Just True, word = nextWord, seed = nextSeed, score = nextScore model }
+
+
+nextScore : Model -> Int
+nextScore model =
+    model.score + 1
 
 
 cleanValue : Word -> String -> String
