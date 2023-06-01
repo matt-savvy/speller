@@ -309,7 +309,9 @@ view model =
 
                 GameOver ->
                     [ div [ css [ Breakpoints.lg [ Tw.h_full ], Tw.flex, Tw.flex_col, Tw.content_center, Tw.justify_start ] ]
-                        [ div [ css [ Tw.ml_auto, Tw.mr_auto ] ] [ gameOverView, inputValueView model ] ]
+                        [ gameOverText
+                        , div [ css [ Tw.ml_auto, Tw.mr_auto ] ] [ gameOverView, inputValueView model ]
+                        ]
                     , form [ onSubmit Submit ]
                         [ inputView model ]
                     ]
@@ -324,6 +326,11 @@ view model =
 instructions : Html Msg
 instructions =
     div [ css [ Tw.ml_auto, Tw.mr_auto ] ] [ text "Alphabetize the word" ]
+
+
+gameOverText : Html Msg
+gameOverText =
+    div [ css [ Tw.ml_auto, Tw.mr_auto ] ] [ text "New words tomorrow!" ]
 
 
 headerView : Model -> Html Msg
