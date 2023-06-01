@@ -185,7 +185,7 @@ solvedUpdate model =
 
 nextScore : Model -> Int
 nextScore model =
-    model.score + 1
+    model.score + String.length (getWord model.word)
 
 
 cleanValue : Word -> String -> String
