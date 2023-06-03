@@ -130,7 +130,7 @@ update msg model =
                     cleanValue model.word nextInputValue
 
                 nextModel =
-                    { model | inputValue = cleanedValue }
+                    { model | inputValue = cleanedValue, solved = Nothing }
             in
             if isSolvedLength model.word cleanedValue then
                 update Submit nextModel
