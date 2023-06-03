@@ -29,7 +29,7 @@ suite =
                 \_ -> Expect.equal "lorem" (cleanValue (createWord "lorem") "LoREM")
             , test "length can't be longer than solution word" <|
                 \_ -> Expect.equal "abciff" (cleanValue (createWord "fabric") "abciffr")
-            , test "length cant be shorter than solution word" <|
+            , test "length can be shorter than solution word" <|
                 \_ -> Expect.equal "abc" (cleanValue (createWord "fabric") "abc")
             ]
         , describe "getTimeSeed"
