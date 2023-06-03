@@ -24,13 +24,15 @@ suite =
             ]
         , describe "cleanValue"
             [ test "no whitespace" <|
-                \_ -> Expect.equal False (String.contains " " (cleanValue (createWord "loremipsum") "lorem ipsum"))
+                \_ -> Expect.equal False (String.contains " " (cleanValue (createWord "loremipsum") True "lorem ipsum"))
             , test "no uppercase" <|
-                \_ -> Expect.equal "lorem" (cleanValue (createWord "lorem") "LoREM")
+                \_ -> Expect.equal "lorem" (cleanValue (createWord "lorem") True "LoREM")
             , test "length can't be longer than solution word" <|
-                \_ -> Expect.equal "abciff" (cleanValue (createWord "fabric") "abciffr")
+                \_ -> Expect.equal "abciff" (cleanValue (createWord "fabric") True "abciffr")
             , test "length can be shorter than solution word" <|
-                \_ -> Expect.equal "abc" (cleanValue (createWord "fabric") "abc")
+                \_ -> Expect.equal "abc" (cleanValue (createWord "fabric") True "abc")
+            , test "result filters incorrect letters when not hardMode" <|
+                \_ -> Expect.equal "abci" (cleanValue (createWord "fabric") False "abcei")
             ]
         , describe "getTimeSeed"
             [ test "values match for same day" <|

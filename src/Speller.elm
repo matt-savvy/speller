@@ -127,7 +127,7 @@ update msg model =
         InputChanged nextInputValue ->
             let
                 cleanedValue =
-                    cleanValue model.word nextInputValue
+                    cleanValue model.word model.hardMode nextInputValue
 
                 nextModel =
                     { model | inputValue = cleanedValue, solved = Nothing }
@@ -191,8 +191,8 @@ nextScore model =
     model.score + String.length (getWord model.word)
 
 
-cleanValue : Word -> String -> String
-cleanValue word input =
+cleanValue : Word -> Bool -> String -> String
+cleanValue word hardMode input =
     let
         wordStr : String
         wordStr =
@@ -202,13 +202,14 @@ cleanValue word input =
         set =
             wordStr |> String.toList |> Set.fromList
 
-        letterFilter : Char -> Bool
+        letterFilter : String -> String
         letterFilter =
-            \char -> Set.member char set
+            String.filter (\char -> Set.member char set)
     in
     input
+        |> String.filter Char.isAlpha
         |> String.toLower
-        |> String.filter letterFilter
+        |> letterFilter
         |> String.slice 0 (String.length wordStr)
 
 
