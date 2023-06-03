@@ -389,9 +389,15 @@ startButton : Html Msg
 startButton =
     button
         [ css
-            [ Tw.py_2
-            , Tw.px_4
-            , Tw.rounded
+            [ Tw.text_4xl
+            , Tw.text_color Tw.gray_900
+            , Tw.uppercase
+            , Tw.block
+            , Tw.rounded_full
+            , Tw.border_2
+            , Tw.border_color Tw.gray_400
+            , Tw.mt_2
+            , Tw.py_2
             ]
         , onClick GotStart
         , id "start-button"
