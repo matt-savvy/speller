@@ -204,7 +204,11 @@ cleanValue word hardMode input =
 
         letterFilter : String -> String
         letterFilter =
-            String.filter (\char -> Set.member char set)
+            if hardMode then
+                identity
+
+            else
+                String.filter (\char -> Set.member char set)
     in
     input
         |> String.filter Char.isAlpha

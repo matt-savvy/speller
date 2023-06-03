@@ -31,6 +31,8 @@ suite =
                 \_ -> Expect.equal "abciff" (cleanValue (createWord "fabric") True "abciffr")
             , test "length can be shorter than solution word" <|
                 \_ -> Expect.equal "abc" (cleanValue (createWord "fabric") True "abc")
+            , test "result includes incorrect letters for hardMode" <|
+                \_ -> Expect.equal "abcei" (cleanValue (createWord "fabric") True "abcei")
             , test "result filters incorrect letters when not hardMode" <|
                 \_ -> Expect.equal "abci" (cleanValue (createWord "fabric") False "abcei")
             ]
