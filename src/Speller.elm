@@ -142,6 +142,9 @@ update msg model =
             if isSolved model.word model.inputValue then
                 ( solvedUpdate model, Cmd.none )
 
+            else if String.isEmpty model.inputValue then
+                ( model, Cmd.none )
+
             else
                 ( { model | solved = Just False }, Cmd.none )
 
