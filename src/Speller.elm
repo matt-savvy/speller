@@ -416,10 +416,10 @@ startButton =
 hardModeToggle : Bool -> Html Msg
 hardModeToggle hardMode =
     div [ css [ Tw.my_4, Tw.flex, Tw.justify_center ] ]
-        [ label [ css [ Tw.cursor_pointer, Breakpoints.lg [ Tw.text_2xl ] ] ]
+        [ label [ css [ Tw.cursor_pointer, Tw.text_2xl ] ]
             [ input [ css [ Tw.cursor_pointer ], type_ "checkbox", checked hardMode, onCheck HardModeChanged ] []
             , text "Hard mode"
-            , p [ css [ Tw.text_color Tw.gray_700, Tw.text_3xl, Breakpoints.lg [ Tw.text_lg ] ] ] [ text "Show less clues" ]
+            , p [ css [ Tw.text_color Tw.gray_700, Tw.text_xl ] ] [ text "Show less clues" ]
             ]
         ]
 
