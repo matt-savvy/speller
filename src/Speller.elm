@@ -507,7 +507,7 @@ solvedView solved =
                 Nothing ->
                     ""
     in
-    div [ css [ Tw.ml_auto, Tw.mr_auto, Tw.w_fit ] ] [ text solvedText ]
+    div [ css [ Tw.ml_auto, Tw.mr_auto, Tw.w_fit, Tw.h_12 ] ] [ text solvedText ]
 
 
 gameOverView : Html Msg
