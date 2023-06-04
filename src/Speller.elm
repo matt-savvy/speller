@@ -5,7 +5,7 @@ import Browser.Dom as Dom
 import Css exposing (fontFamilies, minWidth, monospace, px)
 import Css.Global
 import Feedback exposing (Feedback(..), getFeedback)
-import Html.Styled exposing (Html, button, div, form, h2, input, label, p, span, text, toUnstyled)
+import Html.Styled exposing (Html, button, div, form, h2, input, label, span, text, toUnstyled)
 import Html.Styled.Attributes exposing (autocomplete, checked, css, disabled, id, type_, value)
 import Html.Styled.Events exposing (onCheck, onClick, onInput, onSubmit)
 import List
@@ -419,7 +419,7 @@ hardModeToggle hardMode =
         [ label [ css [ Tw.cursor_pointer, Tw.text_2xl ] ]
             [ input [ css [ Tw.cursor_pointer ], type_ "checkbox", checked hardMode, onCheck HardModeChanged ] []
             , text "Hard mode"
-            , p [ css [ Tw.text_color Tw.gray_700, Tw.text_xl ] ] [ text "Show less clues" ]
+            , span [ css [ Tw.block, Tw.text_color Tw.gray_700, Tw.text_xl ] ] [ text "Show less clues" ]
             ]
         ]
 
