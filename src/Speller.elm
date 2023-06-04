@@ -372,7 +372,7 @@ inputView model =
         [ css
             [ Tw.text_xl
             , Tw.tracking_widest
-            , Tw.mt_2
+            , Tw.my_2
             , Tw.uppercase
             , Tw.block
             , Tw.rounded_full
