@@ -496,19 +496,18 @@ timeRemaining startTime currentTime =
 solvedView : Solved -> Html msg
 solvedView solved =
     let
-        style =
-            css [ Tw.ml_auto, Tw.mr_auto, Tw.w_fit ]
+        solvedText =
+            case solved of
+                Just True ->
+                    "correct!"
+
+                Just False ->
+                    "incorrect!"
+
+                Nothing ->
+                    ""
     in
-    case solved of
-        Just result ->
-            if result then
-                div [ style ] [ text "correct!" ]
-
-            else
-                div [ style ] [ text "incorrect!" ]
-
-        Nothing ->
-            div [] []
+    div [ css [ Tw.ml_auto, Tw.mr_auto, Tw.w_fit ] ] [ text solvedText ]
 
 
 gameOverView : Html Msg
