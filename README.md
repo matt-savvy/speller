@@ -2,5 +2,5 @@
 
 ## Compile
 ```
-elm make --optimize src/Speller.elm
+elm make src/Speller.elm --optimize --output=speller.js
 ```
