@@ -165,7 +165,11 @@ update msg model =
             case model.startTime of
                 Just startTime ->
                     if timeRemaining startTime time <= 0 then
-                        ( { model | time = Just time, status = GameOver }, Cmd.none )
+                        let
+                            partial =
+                                partialScore model.word model.inputValue
+                        in
+                        ( { model | score = model.score + partial, time = Just time, status = GameOver }, Cmd.none )
 
                     else
                         ( { model | time = Just time }, Cmd.none )
