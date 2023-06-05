@@ -305,8 +305,13 @@ monthToInt month =
 
 
 subscriptions : Model -> Sub Msg
-subscriptions _ =
-    Time.every 1000 Tick
+subscriptions model =
+    case model.status of
+        Active ->
+            Time.every 1000 Tick
+
+        _ ->
+            Sub.none
 
 
 
