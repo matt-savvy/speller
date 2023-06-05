@@ -1,7 +1,7 @@
 module SpellerTest exposing (..)
 
 import Expect
-import Speller exposing (cleanValue, getTimeSeed, isSolved, isSolvedLength)
+import Speller exposing (cleanValue, getTimeSeed, isSolved, isSolvedLength, partialScore)
 import Test exposing (..)
 import Time exposing (millisToPosix, utc)
 import Word exposing (createWord)
@@ -57,5 +57,13 @@ suite =
                             millisToPosix 1684972800000
                     in
                     Expect.notEqual (getTimeSeed posixA utc) (getTimeSeed posixB utc)
+            ]
+        , describe "partialScore"
+            [ test "correct fragment gives points for the whole fragment" <|
+                \_ ->
+                    Expect.equal 3 (partialScore (createWord "fabric") "abc")
+            , test "incorrect fragment gives 0 points" <|
+                \_ ->
+                    Expect.equal 0 (partialScore (createWord "fabric") "abf")
             ]
         ]

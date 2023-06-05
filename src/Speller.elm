@@ -1,4 +1,4 @@
-module Speller exposing (cleanValue, getTimeSeed, isSolved, isSolvedLength, main)
+module Speller exposing (cleanValue, getTimeSeed, isSolved, isSolvedLength, main, partialScore)
 
 import Browser
 import Browser.Dom as Dom
@@ -189,6 +189,24 @@ solvedUpdate model =
 nextScore : Model -> Int
 nextScore model =
     model.score + String.length (getWord model.word)
+
+
+partialScore : Word -> String -> Int
+partialScore word input =
+    let
+        inputLength =
+            String.length input
+
+        partial =
+            word
+                |> getSolution
+                |> String.slice 0 inputLength
+    in
+    if partial == input then
+        inputLength
+
+    else
+        0
 
 
 cleanValue : Word -> Bool -> String -> String
