@@ -152,10 +152,13 @@ update msg model =
             ( { model | hardMode = nextFeedback }, Cmd.none )
 
         AdjustTimeZone timeZone ->
-            ( { model | zone = timeZone, status = Ready }, focus "start-button" )
+            ( { model | zone = timeZone }, getStartTime Ready )
 
         GotStartTime nextStatus time ->
             case nextStatus of
+                Ready ->
+                    ( { model | status = nextStatus, time = Just time }, focus "start-button" )
+
                 Active ->
                     let
                         ( word, nextSeed ) =
