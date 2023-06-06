@@ -4,11 +4,17 @@ const app = Speller.init({
     node: document.getElementById('elm'),
 });
 
-function getAlreadyPlayed() {
-    return false;
+function getAlreadyPlayed(key) {
+    const item = localStorage.getItem(key);
+
+    if (item) {
+        return true;
+    }
+
+    return false
 }
 
-app.ports.checkAlreadyPlayed.subscribe(function(_message) {
-    const message = { alreadyPlayed: getAlreadyPlayed() }
-    app.ports.messageReceiver.send(JSON.stringify(message))
+app.ports.checkAlreadyPlayed.subscribe(function(message) {
+    const alreadyPlayedMessage = { alreadyPlayed: getAlreadyPlayed(message) }
+    app.ports.messageReceiver.send(JSON.stringify(alreadyPlayedMessage))
 });
