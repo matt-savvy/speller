@@ -1,4 +1,4 @@
-module Speller exposing (cleanValue, getTimeSeed, isSolved, isSolvedLength, main, partialScore)
+port module Speller exposing (cleanValue, getTimeSeed, isSolved, isSolvedLength, main, partialScore)
 
 import Browser
 import Browser.Dom as Dom
@@ -104,6 +104,16 @@ getStartTime nextStatus =
 
 
 
+-- PORTS
+
+
+port checkAlreadyPlayed : String -> Cmd msg
+
+
+port messageReceiver : (String -> msg) -> Sub msg
+
+
+
 -- UPDATE
 
 
@@ -115,6 +125,7 @@ type Msg
     | AdjustTimeZone Time.Zone
     | GotStartTime GameStatus Time.Posix
     | Tick Time.Posix
+    | Recv String
     | NoOp
 
 
@@ -152,12 +163,15 @@ update msg model =
             ( { model | hardMode = nextFeedback }, Cmd.none )
 
         AdjustTimeZone timeZone ->
-            ( { model | zone = timeZone }, getStartTime Ready )
+            ( { model | zone = timeZone }, getStartTime Loading )
+
+        Recv _ ->
+            ( { model | status = Ready }, focus "start-button" )
 
         GotStartTime nextStatus time ->
             case nextStatus of
-                Ready ->
-                    ( { model | status = nextStatus, time = Just time }, focus "start-button" )
+                Loading ->
+                    ( { model | status = nextStatus, time = Just time }, checkAlreadyPlayed (String.fromInt (getTimeSeed time model.zone)) )
 
                 Active ->
                     let
@@ -323,7 +337,7 @@ subscriptions model =
             Time.every 1000 Tick
 
         _ ->
-            Sub.none
+            messageReceiver Recv
 
 
 
