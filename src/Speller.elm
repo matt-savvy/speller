@@ -112,6 +112,9 @@ getStartTime nextStatus =
 port checkAlreadyPlayed : String -> Cmd msg
 
 
+port setAlreadyPlayed : String -> Cmd msg
+
+
 port messageReceiver : (String -> msg) -> Sub msg
 
 
@@ -201,7 +204,7 @@ update msg model =
                             partial =
                                 partialScore model.word model.inputValue
                         in
-                        ( { model | score = model.score + partial, time = Just time, status = GameOver }, Cmd.none )
+                        ( { model | score = model.score + partial, time = Just time, status = GameOver }, setAlreadyPlayed (String.fromInt (getTimeSeed time model.zone)) )
 
                     else
                         ( { model | time = Just time }, Cmd.none )

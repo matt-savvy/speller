@@ -18,3 +18,7 @@ app.ports.checkAlreadyPlayed.subscribe(function(message) {
     const alreadyPlayedMessage = { alreadyPlayed: getAlreadyPlayed(message) }
     app.ports.messageReceiver.send(JSON.stringify(alreadyPlayedMessage))
 });
+
+app.ports.setAlreadyPlayed.subscribe(function(message) {
+    localStorage.setItem(message, true);
+});
