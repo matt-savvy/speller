@@ -98,9 +98,9 @@ getTimeZone =
     Task.perform AdjustTimeZone Time.here
 
 
-getStartTime : Cmd Msg
-getStartTime =
-    Task.perform GotStartTime Time.now
+getStartTime : GameStatus -> Cmd Msg
+getStartTime nextStatus =
+    Task.perform (GotStartTime nextStatus) Time.now
 
 
 
@@ -113,7 +113,7 @@ type Msg
     | Submit
     | HardModeChanged Bool
     | AdjustTimeZone Time.Zone
-    | GotStartTime Time.Posix
+    | GotStartTime GameStatus Time.Posix
     | Tick Time.Posix
     | NoOp
 
@@ -122,7 +122,7 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         GotStart ->
-            ( model, getStartTime )
+            ( model, getStartTime Active )
 
         InputChanged nextInputValue ->
             let
@@ -154,12 +154,17 @@ update msg model =
         AdjustTimeZone timeZone ->
             ( { model | zone = timeZone, status = Ready }, focus "start-button" )
 
-        GotStartTime time ->
-            let
-                ( word, nextSeed ) =
-                    getTimeSeed time model.zone |> Random.initialSeed |> randomWord
-            in
-            ( { model | status = Active, time = Just time, startTime = Just time, word = word, seed = nextSeed }, focus "text-input" )
+        GotStartTime nextStatus time ->
+            case nextStatus of
+                Active ->
+                    let
+                        ( word, nextSeed ) =
+                            getTimeSeed time model.zone |> Random.initialSeed |> randomWord
+                    in
+                    ( { model | status = nextStatus, time = Just time, startTime = Just time, word = word, seed = nextSeed }, focus "text-input" )
+
+                _ ->
+                    ( model, Cmd.none )
 
         Tick time ->
             case model.startTime of
