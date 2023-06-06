@@ -47,6 +47,7 @@ type GameStatus
     | Ready
     | Active
     | GameOver
+    | AlreadyPlayed
 
 
 type alias Model =
@@ -167,11 +168,15 @@ update msg model =
             ( { model | zone = timeZone }, getStartTime Loading )
 
         Recv message ->
-            if decodeMessage message then
-                ( { model | status = Ready }, focus "start-button" )
+            let
+                alreadyPlayed =
+                    decodeMessage message
+            in
+            if alreadyPlayed then
+                ( { model | status = AlreadyPlayed }, Cmd.none )
 
             else
-                ( model, Cmd.none )
+                ( { model | status = Ready }, focus "start-button" )
 
         GotStartTime nextStatus time ->
             case nextStatus of
@@ -394,6 +399,13 @@ view model =
                     , form [ onSubmit Submit ]
                         [ inputView model ]
                     ]
+
+                AlreadyPlayed ->
+                    [ div [ css [ Breakpoints.lg [ Tw.h_full ], Tw.flex, Tw.flex_col, Tw.content_center, Tw.justify_start ] ]
+                        [ alreadyPlayedText
+                        , div [ css [ Tw.ml_auto, Tw.mr_auto ] ] [ gameOverView, inputValueView model ]
+                        ]
+                    ]
     in
     div []
         [ Css.Global.global Tw.globalStyles
@@ -410,6 +422,11 @@ instructions =
 gameOverText : Html Msg
 gameOverText =
     div [ css [ Tw.ml_auto, Tw.mr_auto ] ] [ text "New words tomorrow!" ]
+
+
+alreadyPlayedText : Html Msg
+alreadyPlayedText =
+    div [ css [ Tw.ml_auto, Tw.mr_auto ] ] [ text "You already played today." ]
 
 
 headerView : Model -> Html Msg
