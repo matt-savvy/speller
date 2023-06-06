@@ -1,7 +1,7 @@
 module SpellerTest exposing (..)
 
 import Expect
-import Speller exposing (cleanValue, getTimeSeed, isSolved, isSolvedLength, partialScore)
+import Speller exposing (cleanValue, decodeMessage, getTimeSeed, isSolved, isSolvedLength, partialScore)
 import Test exposing (..)
 import Time exposing (millisToPosix, utc)
 import Word exposing (createWord)
@@ -65,5 +65,16 @@ suite =
             , test "incorrect fragment gives 0 points" <|
                 \_ ->
                     Expect.equal 0 (partialScore (createWord "fabric") "abf")
+            ]
+        , describe "decodeMessage"
+            [ test "alreadyPlayed: true" <|
+                \_ ->
+                    Expect.equal True (decodeMessage "{\"alreadyPlayed\":true}")
+            , test "alreadyPlayed: false" <|
+                \_ ->
+                    Expect.equal False (decodeMessage "{\"alreadyPlayed\":false}")
+            , test "invalid data" <|
+                \_ ->
+                    Expect.equal False (decodeMessage "{\"alreadyPlayed\": 123}")
             ]
         ]

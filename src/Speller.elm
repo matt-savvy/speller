@@ -1,4 +1,4 @@
-port module Speller exposing (cleanValue, getTimeSeed, isSolved, isSolvedLength, main, partialScore)
+port module Speller exposing (cleanValue, decodeMessage, getTimeSeed, isSolved, isSolvedLength, main, partialScore)
 
 import Browser
 import Browser.Dom as Dom
@@ -8,6 +8,7 @@ import Feedback exposing (Feedback(..), getFeedback)
 import Html.Styled exposing (Html, button, div, form, h2, input, label, span, text, toUnstyled)
 import Html.Styled.Attributes exposing (autocomplete, checked, css, disabled, id, type_, value)
 import Html.Styled.Events exposing (onCheck, onClick, onInput, onSubmit)
+import Json.Decode exposing (Decoder, bool, decodeString, field)
 import List
 import Random
 import Set exposing (Set)
@@ -165,8 +166,12 @@ update msg model =
         AdjustTimeZone timeZone ->
             ( { model | zone = timeZone }, getStartTime Loading )
 
-        Recv _ ->
-            ( { model | status = Ready }, focus "start-button" )
+        Recv message ->
+            if decodeMessage message then
+                ( { model | status = Ready }, focus "start-button" )
+
+            else
+                ( model, Cmd.none )
 
         GotStartTime nextStatus time ->
             case nextStatus of
@@ -324,6 +329,21 @@ monthToInt month =
 
         Time.Dec ->
             12
+
+
+messageDecoder : Decoder Bool
+messageDecoder =
+    field "alreadyPlayed" bool
+
+
+decodeMessage : String -> Bool
+decodeMessage messageString =
+    case decodeString messageDecoder messageString of
+        Ok value ->
+            value
+
+        Err _ ->
+            False
 
 
 
