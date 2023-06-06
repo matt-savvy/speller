@@ -109,10 +109,14 @@ getStartTime nextStatus =
 -- PORTS
 
 
+type alias AlreadyPlayedMessage =
+    { key : String, score : Int }
+
+
 port checkAlreadyPlayed : String -> Cmd msg
 
 
-port setAlreadyPlayed : String -> Cmd msg
+port setAlreadyPlayed : AlreadyPlayedMessage -> Cmd msg
 
 
 port messageReceiver : (String -> msg) -> Sub msg
@@ -203,8 +207,14 @@ update msg model =
                         let
                             partial =
                                 partialScore model.word model.inputValue
+
+                            finalScore =
+                                model.score + partial
+
+                            alreadyPlayedMessage =
+                                { key = String.fromInt (getTimeSeed time model.zone), score = finalScore }
                         in
-                        ( { model | score = model.score + partial, time = Just time, status = GameOver }, setAlreadyPlayed (String.fromInt (getTimeSeed time model.zone)) )
+                        ( { model | score = finalScore, time = Just time, status = GameOver }, setAlreadyPlayed alreadyPlayedMessage )
 
                     else
                         ( { model | time = Just time }, Cmd.none )

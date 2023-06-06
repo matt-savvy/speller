@@ -20,5 +20,8 @@ app.ports.checkAlreadyPlayed.subscribe(function(message) {
 });
 
 app.ports.setAlreadyPlayed.subscribe(function(message) {
-    localStorage.setItem(message, true);
+    const key = message.key;
+    const data = JSON.stringify({ score: message.score });
+
+    localStorage.setItem(key, data);
 });
