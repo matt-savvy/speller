@@ -134,7 +134,7 @@ type Msg
     | AdjustTimeZone Time.Zone
     | GotStartTime GameStatus Time.Posix
     | Tick Time.Posix
-    | Recv String
+    | ReceivedMessage String
     | NoOp
 
 
@@ -174,7 +174,7 @@ update msg model =
         AdjustTimeZone timeZone ->
             ( { model | zone = timeZone }, getStartTime Loading )
 
-        Recv message ->
+        ReceivedMessage message ->
             let
                 response =
                     decodeMessage message
@@ -381,7 +381,7 @@ subscriptions model =
             Time.every 1000 Tick
 
         _ ->
-            messageReceiver Recv
+            messageReceiver ReceivedMessage
 
 
 
