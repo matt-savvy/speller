@@ -171,8 +171,8 @@ update msg model =
             else
                 ( { model | solved = Just False }, Cmd.none )
 
-        HardModeChanged nextFeedback ->
-            ( { model | hardMode = nextFeedback }, setHardMode nextFeedback )
+        HardModeChanged mode ->
+            ( { model | hardMode = mode }, setHardMode mode )
 
         AdjustTimeZone timeZone ->
             ( { model | zone = timeZone }, getStartTime Loading )
