@@ -26,3 +26,7 @@ app.ports.setAlreadyPlayed.subscribe(function(message) {
 
     localStorage.setItem(key, data);
 });
+
+app.ports.setHardMode.subscribe(function(value) {
+    localStorage.setItem("hardMode", value);
+});

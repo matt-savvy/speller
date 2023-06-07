@@ -119,6 +119,9 @@ port checkAlreadyPlayed : String -> Cmd msg
 port setAlreadyPlayed : AlreadyPlayedMessage -> Cmd msg
 
 
+port setHardMode : Bool -> Cmd msg
+
+
 port messageReceiver : (String -> msg) -> Sub msg
 
 
@@ -169,7 +172,7 @@ update msg model =
                 ( { model | solved = Just False }, Cmd.none )
 
         HardModeChanged nextFeedback ->
-            ( { model | hardMode = nextFeedback }, Cmd.none )
+            ( { model | hardMode = nextFeedback }, setHardMode nextFeedback )
 
         AdjustTimeZone timeZone ->
             ( { model | zone = timeZone }, getStartTime Loading )
