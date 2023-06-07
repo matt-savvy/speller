@@ -26,7 +26,7 @@ import Word exposing (Word, getSolution, getWord, randomWord)
 
 
 type alias Flags =
-    { hardMode : Bool }
+    { hardMode : Bool, offset : Int }
 
 
 type alias Solved =
@@ -69,7 +69,7 @@ init flags =
     ( { inputValue = ""
       , word = word
       , seed = nextSeed
-      , offset = 0
+      , offset = flags.offset
       , solved = Nothing
       , status = Loading
       , score = 0

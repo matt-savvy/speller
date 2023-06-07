@@ -5,9 +5,13 @@ function getHardMode() {
     return data === "true";
 }
 
+function getOffset() {
+    return 0;
+}
+
 const app = Speller.init({
     node: document.getElementById('elm'),
-    flags: { hardMode: getHardMode() }
+    flags: { hardMode: getHardMode(), offset: getOffset() }
 });
 
 function getAlreadyPlayed(key) {
