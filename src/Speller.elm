@@ -22,15 +22,6 @@ import Word exposing (Word, getSolution, getWord, randomWord)
 
 
 
--- DEVELOP
-
-
-randomWordOffset : Int
-randomWordOffset =
-    8
-
-
-
 -- MODEL
 
 
@@ -54,6 +45,7 @@ type alias Model =
     { inputValue : String
     , word : Word
     , seed : Random.Seed
+    , offset : Int
     , solved : Solved
     , status : GameStatus
     , score : Score
@@ -73,6 +65,7 @@ init hardModeFlag =
     ( { inputValue = ""
       , word = word
       , seed = nextSeed
+      , offset = 0
       , solved = Nothing
       , status = Loading
       , score = 0
@@ -191,12 +184,12 @@ update msg model =
         GotStartTime nextStatus time ->
             case nextStatus of
                 Loading ->
-                    ( { model | status = nextStatus, time = Just time }, checkAlreadyPlayed (String.fromInt (getTimeSeed time model.zone randomWordOffset)) )
+                    ( { model | status = nextStatus, time = Just time }, checkAlreadyPlayed (String.fromInt (getTimeSeed time model.zone model.offset)) )
 
                 Active ->
                     let
                         ( word, nextSeed ) =
-                            getTimeSeed time model.zone randomWordOffset |> Random.initialSeed |> randomWord
+                            getTimeSeed time model.zone model.offset |> Random.initialSeed |> randomWord
                     in
                     ( { model | status = nextStatus, time = Just time, startTime = Just time, word = word, seed = nextSeed }, focus "text-input" )
 
@@ -215,7 +208,7 @@ update msg model =
                                 model.score + partial
 
                             alreadyPlayedMessage =
-                                { key = String.fromInt (getTimeSeed time model.zone randomWordOffset), score = finalScore }
+                                { key = String.fromInt (getTimeSeed time model.zone model.offset), score = finalScore }
                         in
                         ( { model | score = finalScore, time = Just time, status = GameOver }, setAlreadyPlayed alreadyPlayedMessage )
 
