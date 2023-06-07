@@ -46,7 +46,7 @@ suite =
                         posixB =
                             millisToPosix 1684972799999
                     in
-                    Expect.equal (getTimeSeed posixA utc) (getTimeSeed posixB utc)
+                    Expect.equal (getTimeSeed posixA utc 0) (getTimeSeed posixB utc 0)
             , test "values don't match for different days" <|
                 \_ ->
                     let
@@ -56,7 +56,14 @@ suite =
                         posixB =
                             millisToPosix 1684972800000
                     in
-                    Expect.notEqual (getTimeSeed posixA utc) (getTimeSeed posixB utc)
+                    Expect.notEqual (getTimeSeed posixA utc 0) (getTimeSeed posixB utc 0)
+            , test "values don't match for different offsets" <|
+                \_ ->
+                    let
+                        posixA =
+                            millisToPosix 1684886400000
+                    in
+                    Expect.notEqual (getTimeSeed posixA utc 0) (getTimeSeed posixA utc 1)
             ]
         , describe "partialScore"
             [ test "correct fragment gives points for the whole fragment" <|

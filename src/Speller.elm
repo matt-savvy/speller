@@ -191,12 +191,12 @@ update msg model =
         GotStartTime nextStatus time ->
             case nextStatus of
                 Loading ->
-                    ( { model | status = nextStatus, time = Just time }, checkAlreadyPlayed (String.fromInt (getTimeSeed time model.zone)) )
+                    ( { model | status = nextStatus, time = Just time }, checkAlreadyPlayed (String.fromInt (getTimeSeed time model.zone randomWordOffset)) )
 
                 Active ->
                     let
                         ( word, nextSeed ) =
-                            getTimeSeed time model.zone |> Random.initialSeed |> randomWord
+                            getTimeSeed time model.zone randomWordOffset |> Random.initialSeed |> randomWord
                     in
                     ( { model | status = nextStatus, time = Just time, startTime = Just time, word = word, seed = nextSeed }, focus "text-input" )
 
@@ -215,7 +215,7 @@ update msg model =
                                 model.score + partial
 
                             alreadyPlayedMessage =
-                                { key = String.fromInt (getTimeSeed time model.zone), score = finalScore }
+                                { key = String.fromInt (getTimeSeed time model.zone randomWordOffset), score = finalScore }
                         in
                         ( { model | score = finalScore, time = Just time, status = GameOver }, setAlreadyPlayed alreadyPlayedMessage )
 
@@ -297,8 +297,8 @@ isSolved word textValue =
     textValue == getSolution word
 
 
-getTimeSeed : Time.Posix -> Time.Zone -> Int
-getTimeSeed time timeZone =
+getTimeSeed : Time.Posix -> Time.Zone -> Int -> Int
+getTimeSeed time timeZone offset =
     let
         year =
             Time.toYear timeZone time
@@ -309,7 +309,7 @@ getTimeSeed time timeZone =
         day =
             Time.toDay timeZone time
     in
-    (year * 10000) + (month * 100) + day - randomWordOffset
+    (year * 10000) + (month * 100) + day - offset
 
 
 monthToInt : Time.Month -> Int
