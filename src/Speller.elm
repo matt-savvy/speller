@@ -25,6 +25,10 @@ import Word exposing (Word, getSolution, getWord, randomWord)
 -- MODEL
 
 
+type alias Flags =
+    { hardMode : Bool }
+
+
 type alias Solved =
     Maybe Bool
 
@@ -56,8 +60,8 @@ type alias Model =
     }
 
 
-init : Bool -> ( Model, Cmd Msg )
-init hardModeFlag =
+init : Flags -> ( Model, Cmd Msg )
+init flags =
     let
         ( word, nextSeed ) =
             0 |> Random.initialSeed |> randomWord
@@ -69,7 +73,7 @@ init hardModeFlag =
       , solved = Nothing
       , status = Loading
       , score = 0
-      , hardMode = hardModeFlag
+      , hardMode = flags.hardMode
       , startTime = Nothing
       , time = Nothing
       , zone = Time.utc
@@ -624,6 +628,6 @@ gameOverView =
 -- MAIN
 
 
-main : Program Bool Model Msg
+main : Program Flags Model Msg
 main =
     Browser.element { init = init, update = update, view = view >> toUnstyled, subscriptions = subscriptions }

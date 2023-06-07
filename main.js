@@ -7,7 +7,7 @@ function getHardMode() {
 
 const app = Speller.init({
     node: document.getElementById('elm'),
-    flags: getHardMode()
+    flags: { hardMode: getHardMode() }
 });
 
 function getAlreadyPlayed(key) {
