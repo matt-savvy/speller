@@ -8,14 +8,15 @@ function getAlreadyPlayed(key) {
     const item = localStorage.getItem(key);
 
     if (item) {
-        return true;
+        const data = JSON.parse(item);
+        return { ...data, alreadyPlayed: true }
     }
 
-    return false
+    return { alreadyPlayed: false }
 }
 
 app.ports.checkAlreadyPlayed.subscribe(function(message) {
-    const alreadyPlayedMessage = { alreadyPlayed: getAlreadyPlayed(message) }
+    const alreadyPlayedMessage = getAlreadyPlayed(message);
     app.ports.messageReceiver.send(JSON.stringify(alreadyPlayedMessage))
 });
 

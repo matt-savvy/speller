@@ -8,7 +8,7 @@ import Feedback exposing (Feedback(..), getFeedback)
 import Html.Styled exposing (Html, button, div, form, h2, input, label, span, text, toUnstyled)
 import Html.Styled.Attributes exposing (autocomplete, checked, css, disabled, id, type_, value)
 import Html.Styled.Events exposing (onCheck, onClick, onInput, onSubmit)
-import Json.Decode exposing (Decoder, bool, decodeString, field)
+import Json.Decode exposing (Decoder, bool, decodeString, field, int, map2, maybe)
 import List
 import Random
 import Set exposing (Set)
@@ -176,10 +176,10 @@ update msg model =
 
         Recv message ->
             let
-                alreadyPlayed =
+                response =
                     decodeMessage message
             in
-            if alreadyPlayed then
+            if response.alreadyPlayed then
                 ( { model | status = AlreadyPlayed }, Cmd.none )
 
             else
@@ -349,19 +349,25 @@ monthToInt month =
             12
 
 
-messageDecoder : Decoder Bool
+type alias AlreadyPlayedResponse =
+    { score : Maybe Int, alreadyPlayed : Bool }
+
+
+messageDecoder : Decoder AlreadyPlayedResponse
 messageDecoder =
-    field "alreadyPlayed" bool
+    map2 AlreadyPlayedResponse
+        (maybe (field "score" int))
+        (field "alreadyPlayed" bool)
 
 
-decodeMessage : String -> Bool
+decodeMessage : String -> AlreadyPlayedResponse
 decodeMessage messageString =
     case decodeString messageDecoder messageString of
         Ok value ->
             value
 
         Err _ ->
-            False
+            { alreadyPlayed = False, score = Nothing }
 
 
 

@@ -67,14 +67,14 @@ suite =
                     Expect.equal 0 (partialScore (createWord "fabric") "abf")
             ]
         , describe "decodeMessage"
-            [ test "alreadyPlayed: true" <|
+            [ test "alreadyPlayed: true with score" <|
                 \_ ->
-                    Expect.equal True (decodeMessage "{\"alreadyPlayed\":true}")
+                    Expect.equal { alreadyPlayed = True, score = Just 12 } (decodeMessage "{\"alreadyPlayed\":true,\"score\":12}")
             , test "alreadyPlayed: false" <|
                 \_ ->
-                    Expect.equal False (decodeMessage "{\"alreadyPlayed\":false}")
+                    Expect.equal { alreadyPlayed = False, score = Nothing } (decodeMessage "{\"alreadyPlayed\":false}")
             , test "invalid data" <|
                 \_ ->
-                    Expect.equal False (decodeMessage "{\"alreadyPlayed\": 123}")
+                    Expect.equal { alreadyPlayed = False, score = Nothing } (decodeMessage "{\"alreadyPlayed\": 123}")
             ]
         ]
