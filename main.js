@@ -6,6 +6,13 @@ function getHardMode() {
 }
 
 function getOffset() {
+    const { searchParams } = new URL(window.location);
+    const offset = searchParams.get("offset");
+
+    if (offset) {
+        return JSON.parse(offset);
+    }
+
     return 0;
 }
 
