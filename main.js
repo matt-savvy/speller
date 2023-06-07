@@ -1,7 +1,13 @@
 const { Speller } = Elm;
 
+function getHardMode() {
+    const data = localStorage.getItem("hardMode");
+    return data === "true";
+}
+
 const app = Speller.init({
     node: document.getElementById('elm'),
+    flags: getHardMode()
 });
 
 function getAlreadyPlayed(key) {

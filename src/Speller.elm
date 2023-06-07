@@ -64,8 +64,8 @@ type alias Model =
     }
 
 
-init : () -> ( Model, Cmd Msg )
-init _ =
+init : Bool -> ( Model, Cmd Msg )
+init hardModeFlag =
     let
         ( word, nextSeed ) =
             0 |> Random.initialSeed |> randomWord
@@ -76,7 +76,7 @@ init _ =
       , solved = Nothing
       , status = Loading
       , score = 0
-      , hardMode = False
+      , hardMode = hardModeFlag
       , startTime = Nothing
       , time = Nothing
       , zone = Time.utc
@@ -631,6 +631,6 @@ gameOverView =
 -- MAIN
 
 
-main : Program () Model Msg
+main : Program Bool Model Msg
 main =
     Browser.element { init = init, update = update, view = view >> toUnstyled, subscriptions = subscriptions }
