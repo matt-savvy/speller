@@ -180,7 +180,7 @@ update msg model =
                     decodeMessage message
             in
             if response.alreadyPlayed then
-                ( { model | status = AlreadyPlayed }, Cmd.none )
+                ( { model | status = AlreadyPlayed, score = Maybe.withDefault 0 response.score }, Cmd.none )
 
             else
                 ( { model | status = Ready }, focus "start-button" )
@@ -462,6 +462,9 @@ headerView model =
                     ]
 
                 GameOver ->
+                    [ scoreView model.score ]
+
+                AlreadyPlayed ->
                     [ scoreView model.score ]
 
                 _ ->
