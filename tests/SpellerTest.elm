@@ -64,6 +64,13 @@ suite =
                             millisToPosix 1684886400000
                     in
                     Expect.notEqual (getTimeSeed posixA utc 0) (getTimeSeed posixA utc 1)
+            , test "creates YYYYMMDD value" <|
+                \_ ->
+                    let
+                        posixA =
+                            millisToPosix 1684900800000
+                    in
+                    Expect.equal 20230524 (getTimeSeed posixA utc 0)
             ]
         , describe "partialScore"
             [ test "correct fragment gives points for the whole fragment" <|
