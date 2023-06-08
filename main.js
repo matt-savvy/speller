@@ -5,8 +5,7 @@ function getHardMode() {
     return data === "true";
 }
 
-function getOffset() {
-    const { searchParams } = new URL(window.location);
+function getOffset(searchParams) {
     const offset = searchParams.get("offset");
 
     if (offset) {
@@ -16,9 +15,10 @@ function getOffset() {
     return 0;
 }
 
+const { searchParams } = new URL(window.location);
 const app = Speller.init({
     node: document.getElementById('elm'),
-    flags: { hardMode: getHardMode(), offset: getOffset() }
+    flags: { hardMode: getHardMode(), offset: getOffset(searchParams) }
 });
 
 function getAlreadyPlayed(key) {
