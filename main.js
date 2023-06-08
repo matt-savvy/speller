@@ -21,7 +21,12 @@ const app = Speller.init({
     flags: { hardMode: getHardMode(), offset: getOffset(searchParams) }
 });
 
-function getAlreadyPlayed(key) {
+function getAlreadyPlayed(key, searchParams) {
+    const alreadyPlayed = searchParams.get("alreadyPlayed");
+    if (alreadyPlayed === "true" || alreadyPlayed === "false") {
+        return { alreadyPlayed: JSON.parse(alreadyPlayed) }
+    }
+
     const item = localStorage.getItem(key);
 
     if (item) {
@@ -33,7 +38,7 @@ function getAlreadyPlayed(key) {
 }
 
 app.ports.checkAlreadyPlayed.subscribe(function(message) {
-    const alreadyPlayedMessage = getAlreadyPlayed(message);
+    const alreadyPlayedMessage = getAlreadyPlayed(message, searchParams);
     app.ports.messageReceiver.send(JSON.stringify(alreadyPlayedMessage))
 });
 
