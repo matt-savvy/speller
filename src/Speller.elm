@@ -297,16 +297,22 @@ isSolved word textValue =
 getTimeSeed : Time.Posix -> Time.Zone -> Int -> Int
 getTimeSeed time timeZone offset =
     let
+        offsetTime =
+            time
+                |> Time.posixToMillis
+                |> (\millis -> millis - (offset * 86400000))
+                |> Time.millisToPosix
+
         year =
-            Time.toYear timeZone time
+            Time.toYear timeZone offsetTime
 
         month =
-            monthToInt (Time.toMonth timeZone time)
+            monthToInt (Time.toMonth timeZone offsetTime)
 
         day =
-            Time.toDay timeZone time
+            Time.toDay timeZone offsetTime
     in
-    (year * 10000) + (month * 100) + day - offset
+    (year * 10000) + (month * 100) + day
 
 
 monthToInt : Time.Month -> Int

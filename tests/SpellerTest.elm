@@ -71,6 +71,13 @@ suite =
                             millisToPosix 1684900800000
                     in
                     Expect.equal 20230524 (getTimeSeed posixA utc 0)
+            , test "offsets the seed by one day, respecting calendar" <|
+                \_ ->
+                    let
+                        posixA =
+                            millisToPosix 1685592000000
+                    in
+                    Expect.equal 20230531 (getTimeSeed posixA utc 1)
             ]
         , describe "partialScore"
             [ test "correct fragment gives points for the whole fragment" <|
