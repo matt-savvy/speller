@@ -2,7 +2,7 @@ port module Speller exposing (cleanValue, decodeMessage, getTimeSeed, isSolved, 
 
 import Browser
 import Browser.Dom as Dom
-import Css exposing (fontFamilies, minWidth, monospace, px)
+import Css exposing (fontFamilies, monospace)
 import Css.Global
 import Feedback exposing (Feedback(..), getFeedback)
 import Html.Styled exposing (Html, button, div, form, h2, input, label, span, text, toUnstyled)
@@ -442,7 +442,8 @@ view model =
                 [ Tw.flex
                 , Tw.flex_col
                 , Tw.items_center
-                , Tw.text_5xl
+                , Tw.text_2xl
+                , Breakpoints.lg [ Tw.text_5xl, Tw.gap_1 ]
                 , Tw.w_screen
                 , Tw.h_screen
                 , Tw.content_center
@@ -502,7 +503,7 @@ headerView model =
             , Tw.justify_between
             , Tw.pt_2
             , Tw.px_2
-            , minWidth (px 450)
+            , Tw.w_full
             , Breakpoints.lg [ Tw.pt_4, Tw.px_4, Tw.w_6over12 ]
             ]
         ]
@@ -540,16 +541,16 @@ startButton : Html Msg
 startButton =
     button
         [ css
-            [ Tw.text_4xl
-            , Tw.text_color Tw.gray_900
+            [ Tw.text_color Tw.gray_900
             , Tw.uppercase
             , Tw.block
             , Tw.rounded_full
             , Tw.border_2
             , Tw.border_color Tw.gray_400
             , Tw.mt_2
-            , Tw.py_2
-            , Tw.px_12
+            , Tw.py_1
+            , Tw.px_8
+            , Tw.text_2xl
             ]
         , onClick GotStart
         , id "start-button"
@@ -560,7 +561,7 @@ startButton =
 hardModeToggle : Bool -> Html Msg
 hardModeToggle hardMode =
     div [ css [ Tw.my_4, Tw.flex, Tw.justify_center ] ]
-        [ label [ css [ Tw.cursor_pointer, Tw.text_2xl ] ]
+        [ label [ css [ Tw.cursor_pointer, Tw.text_xl ] ]
             [ input [ css [ Tw.cursor_pointer ], type_ "checkbox", checked hardMode, onCheck HardModeChanged ] []
             , text "Hard mode"
             , span [ css [ Tw.block, Tw.text_color Tw.gray_700, Tw.text_xl ] ] [ text "Show less clues" ]
@@ -571,10 +572,10 @@ hardModeToggle hardMode =
 wordView : Model -> Html Msg
 wordView model =
     if not model.hardMode then
-        div [ css [ Tw.h_14 ], id "word" ] (List.map feedbackLetterView (getFeedback (getWord model.word) model.inputValue))
+        div [ id "word" ] (List.map feedbackLetterView (getFeedback (getWord model.word) model.inputValue))
 
     else
-        div [ css [ Tw.h_14 ] ]
+        div []
             (List.map (letterView []) (String.split "" (getWord model.word)))
 
 
@@ -603,7 +604,7 @@ feedbackLetterView feedback =
 
 letterView : List Css.Style -> String -> Html Msg
 letterView classes letter =
-    span [ css ([ Tw.mx_2, Tw.uppercase, Tw.text_6xl, fontFamilies [ "courier", .value monospace ] ] ++ classes) ] [ text letter ]
+    span [ css ([ Tw.leading_none, Tw.mx_2, Tw.uppercase, Tw.text_3xl, Breakpoints.lg [ Tw.text_6xl ], fontFamilies [ "courier", .value monospace ] ] ++ classes) ] [ text letter ]
 
 
 scoreView : Score -> Html Msg
