@@ -397,6 +397,9 @@ subscriptions model =
 view : Model -> Html Msg
 view model =
     let
+        inputForm =
+            form [ onSubmit Submit ] [ inputView model ]
+
         body =
             case model.status of
                 Loading ->
@@ -413,14 +416,14 @@ view model =
                     [ instructions
                     , div [] [ wordView model, inputValueView model, solvedView model.solved ]
                     , spacer
-                    , form [ onSubmit Submit ] [ inputView model ]
+                    , inputForm
                     ]
 
                 GameOver ->
                     [ gameOverText
                     , div [] [ gameOverView, inputValueView model ]
                     , spacer
-                    , form [ onSubmit Submit ] [ inputView model ]
+                    , inputForm
                     ]
 
                 AlreadyPlayed ->
