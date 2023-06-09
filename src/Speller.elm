@@ -407,21 +407,21 @@ view model =
 
                 Active ->
                     [ instructions
-                    , div [ css [ Tw.ml_auto, Tw.mr_auto ] ] [ wordView model, inputValueView model, solvedView model.solved ]
+                    , div [] [ wordView model, inputValueView model, solvedView model.solved ]
                     , spacer
                     , form [ onSubmit Submit ] [ inputView model ]
                     ]
 
                 GameOver ->
                     [ gameOverText
-                    , div [ css [ Tw.ml_auto, Tw.mr_auto ] ] [ gameOverView, inputValueView model ]
+                    , div [] [ gameOverView, inputValueView model ]
                     , spacer
                     , form [ onSubmit Submit ] [ inputView model ]
                     ]
 
                 AlreadyPlayed ->
                     [ alreadyPlayedText
-                    , div [ css [ Tw.ml_auto, Tw.mr_auto ] ] [ gameOverView, inputValueView model ]
+                    , div [] [ gameOverView, inputValueView model ]
                     ]
     in
     div []
