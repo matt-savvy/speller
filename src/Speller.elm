@@ -453,17 +453,17 @@ spacer =
 
 instructions : Html Msg
 instructions =
-    div [ css [ Tw.ml_auto, Tw.mr_auto ] ] [ text "Alphabetize the word" ]
+    div [] [ text "Alphabetize the word" ]
 
 
 gameOverText : Html Msg
 gameOverText =
-    div [ css [ Tw.ml_auto, Tw.mr_auto ] ] [ text "New words tomorrow!" ]
+    div [] [ text "New words tomorrow!" ]
 
 
 alreadyPlayedText : Html Msg
 alreadyPlayedText =
-    div [ css [ Tw.ml_auto, Tw.mr_auto ] ] [ text "You already played today." ]
+    div [] [ text "You already played today." ]
 
 
 headerView : Model -> Html Msg
