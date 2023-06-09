@@ -414,7 +414,11 @@ view model =
 
                 Active ->
                     [ instructions
-                    , div [] [ wordView model, inputValueView model, solvedView model.solved ]
+                    , div []
+                        [ wordView model
+                        , inputValueView model
+                        , solvedView model.solved
+                        ]
                     , spacer
                     , inputForm
                     ]
