@@ -484,7 +484,7 @@ headerView model =
             , Tw.pt_2
             , Tw.px_2
             , minWidth (px 450)
-            , Breakpoints.lg [ Tw.pt_4, Tw.px_4, Tw.w_full ]
+            , Breakpoints.lg [ Tw.pt_4, Tw.px_4, Tw.w_6over12 ]
             ]
         ]
         items
