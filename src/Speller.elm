@@ -476,7 +476,17 @@ headerView model =
                 _ ->
                     []
     in
-    div [ css [ Tw.flex, Tw.flex_row, Tw.justify_between, Tw.pt_2, Tw.px_2, minWidth (px 450), Breakpoints.lg [ Tw.pt_4, Tw.px_4, Tw.w_full ] ] ]
+    div
+        [ css
+            [ Tw.flex
+            , Tw.flex_row
+            , Tw.justify_between
+            , Tw.pt_2
+            , Tw.px_2
+            , minWidth (px 450)
+            , Breakpoints.lg [ Tw.pt_4, Tw.px_4, Tw.w_full ]
+            ]
+        ]
         items
 
 
