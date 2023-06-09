@@ -539,6 +539,7 @@ startButton =
             , Tw.border_color Tw.gray_400
             , Tw.mt_2
             , Tw.py_2
+            , Tw.px_12
             ]
         , onClick GotStart
         , id "start-button"
