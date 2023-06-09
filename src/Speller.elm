@@ -417,8 +417,8 @@ view model =
                     , div []
                         [ wordView model
                         , inputValueView model
-                        , solvedView model.solved
                         ]
+                    , solvedView model.solved
                     , spacer
                     , inputForm
                     ]
