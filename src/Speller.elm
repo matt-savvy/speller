@@ -434,7 +434,16 @@ view model =
     in
     div []
         [ Css.Global.global Tw.globalStyles
-        , div [ css [ Tw.flex, Tw.flex_col, Tw.items_center, Tw.text_5xl, Tw.w_screen, Tw.h_screen ] ]
+        , div
+            [ css
+                [ Tw.flex
+                , Tw.flex_col
+                , Tw.items_center
+                , Tw.text_5xl
+                , Tw.w_screen
+                , Tw.h_screen
+                ]
+            ]
             (headerView model :: body)
         ]
 
