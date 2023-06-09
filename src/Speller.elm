@@ -403,7 +403,11 @@ view model =
                     []
 
                 Ready ->
-                    [ instructions, spacer, startButton, hardModeToggle model.hardMode ]
+                    [ instructions
+                    , spacer
+                    , startButton
+                    , hardModeToggle model.hardMode
+                    ]
 
                 Active ->
                     [ instructions
