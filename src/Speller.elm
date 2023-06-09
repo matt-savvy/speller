@@ -403,33 +403,25 @@ view model =
                     []
 
                 Ready ->
-                    [ div [ css [ Breakpoints.lg [ Tw.h_full ], Tw.flex, Tw.flex_col, Tw.content_center, Tw.justify_start ] ]
-                        [ instructions, startButton, hardModeToggle model.hardMode ]
-                    ]
+                    [ instructions, spacer, startButton, hardModeToggle model.hardMode ]
 
                 Active ->
-                    [ div [ css [ Breakpoints.lg [ Tw.h_full ], Tw.flex, Tw.flex_col, Tw.content_center, Tw.justify_start ] ]
-                        [ instructions
-                        , div [ css [ Tw.ml_auto, Tw.mr_auto ] ] [ wordView model, inputValueView model, solvedView model.solved ]
-                        ]
-                    , form [ onSubmit Submit ]
-                        [ inputView model ]
+                    [ instructions
+                    , div [ css [ Tw.ml_auto, Tw.mr_auto ] ] [ wordView model, inputValueView model, solvedView model.solved ]
+                    , spacer
+                    , form [ onSubmit Submit ] [ inputView model ]
                     ]
 
                 GameOver ->
-                    [ div [ css [ Breakpoints.lg [ Tw.h_full ], Tw.flex, Tw.flex_col, Tw.content_center, Tw.justify_start ] ]
-                        [ gameOverText
-                        , div [ css [ Tw.ml_auto, Tw.mr_auto ] ] [ gameOverView, inputValueView model ]
-                        ]
-                    , form [ onSubmit Submit ]
-                        [ inputView model ]
+                    [ gameOverText
+                    , div [ css [ Tw.ml_auto, Tw.mr_auto ] ] [ gameOverView, inputValueView model ]
+                    , spacer
+                    , form [ onSubmit Submit ] [ inputView model ]
                     ]
 
                 AlreadyPlayed ->
-                    [ div [ css [ Breakpoints.lg [ Tw.h_full ], Tw.flex, Tw.flex_col, Tw.content_center, Tw.justify_start ] ]
-                        [ alreadyPlayedText
-                        , div [ css [ Tw.ml_auto, Tw.mr_auto ] ] [ gameOverView, inputValueView model ]
-                        ]
+                    [ alreadyPlayedText
+                    , div [ css [ Tw.ml_auto, Tw.mr_auto ] ] [ gameOverView, inputValueView model ]
                     ]
     in
     div []
@@ -442,10 +434,17 @@ view model =
                 , Tw.text_5xl
                 , Tw.w_screen
                 , Tw.h_screen
+                , Tw.content_center
+                , Tw.justify_start
                 ]
             ]
             (headerView model :: body)
         ]
+
+
+spacer : Html Msg
+spacer =
+    div [ id "spacer", css [ Breakpoints.lg [ Tw.grow ] ] ] []
 
 
 instructions : Html Msg
