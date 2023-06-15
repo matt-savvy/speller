@@ -459,19 +459,24 @@ spacer =
     div [ id "spacer", css [ Breakpoints.lg [ Tw.grow ] ] ] []
 
 
+infoText : String -> Html Msg
+infoText info =
+    div [ css [ Tw.text_xl, Tw.text_center ] ] [ text info ]
+
+
 instructions : Html Msg
 instructions =
-    div [ css [ Tw.text_xl, Tw.text_center ] ] [ text "Alphabetize as many words as you can before the time runs out." ]
+    infoText "Alphabetize as many words as you can before the time runs out."
 
 
 gameOverText : Html Msg
 gameOverText =
-    div [ css [ Tw.text_xl, Tw.text_center ] ] [ text "New words tomorrow!" ]
+    infoText "New words tomorrow!"
 
 
 alreadyPlayedText : Html Msg
 alreadyPlayedText =
-    div [ css [ Tw.text_xl, Tw.text_center ] ] [ text "You already played today." ]
+    infoText "You already played today."
 
 
 headerView : Model -> Html Msg
