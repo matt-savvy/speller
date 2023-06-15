@@ -461,7 +461,7 @@ spacer =
 
 instructions : Html Msg
 instructions =
-    div [] [ text "Alphabetize the word" ]
+    div [ css [ Tw.text_xl, Tw.text_center ] ] [ text "Alphabetize as many words as you can before the time runs out." ]
 
 
 gameOverText : Html Msg
