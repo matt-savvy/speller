@@ -625,6 +625,7 @@ scoreView score =
 formatTimeRemaining : Int -> String
 formatTimeRemaining remainingTime =
     remainingTime
+        |> (\n -> n // 1000)
         |> String.fromInt
         |> String.padLeft 2 '0'
 
@@ -645,7 +646,7 @@ timeRemaining startTime currentTime =
         elapsed =
             Time.posixToMillis currentTime - Time.posixToMillis startTime
     in
-    (timeLimit - elapsed) // 1000
+    timeLimit - elapsed
 
 
 solvedView : Solved -> Html msg
