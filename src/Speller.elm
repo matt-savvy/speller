@@ -384,7 +384,7 @@ subscriptions : Model -> Sub Msg
 subscriptions model =
     case model.status of
         Active ->
-            Time.every 1000 Tick
+            Time.every 250 Tick
 
         _ ->
             messageReceiver ReceivedMessage
