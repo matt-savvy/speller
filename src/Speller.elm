@@ -466,12 +466,12 @@ instructions =
 
 gameOverText : Html Msg
 gameOverText =
-    div [] [ text "New words tomorrow!" ]
+    div [ css [ Tw.text_xl, Tw.text_center ] ] [ text "New words tomorrow!" ]
 
 
 alreadyPlayedText : Html Msg
 alreadyPlayedText =
-    div [] [ text "You already played today." ]
+    div [ css [ Tw.text_xl, Tw.text_center ] ] [ text "You already played today." ]
 
 
 headerView : Model -> Html Msg
