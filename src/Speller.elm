@@ -406,14 +406,14 @@ view model =
                     []
 
                 Ready ->
-                    [ instructions
+                    [ readyInstructions
                     , spacer
                     , startButton
                     , hardModeToggle model.hardMode
                     ]
 
                 Active ->
-                    [ instructions
+                    [ activeInstructions
                     , div []
                         [ wordView model
                         , inputValueView model
@@ -464,9 +464,14 @@ infoText info =
     div [ css [ Tw.text_xl, Tw.text_center ] ] [ text info ]
 
 
-instructions : Html Msg
-instructions =
+readyInstructions : Html Msg
+readyInstructions =
     infoText "Alphabetize as many words as you can before the time runs out."
+
+
+activeInstructions : Html Msg
+activeInstructions =
+    infoText "Alphabetize the word."
 
 
 gameOverText : Html Msg
