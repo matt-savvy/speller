@@ -490,7 +490,9 @@ headerView model =
         items =
             case model.status of
                 Ready ->
-                    [ scoreView model.score ]
+                    [ scoreView model.score
+                    , timerView model.startTime model.time
+                    ]
 
                 Active ->
                     [ scoreView model.score
@@ -637,7 +639,7 @@ timerView startTime currentTime =
             h2 [ css [ Tw.uppercase, fontFamilies [ "courier", .value monospace ] ] ] [ text ("Time:" ++ formatTimeRemaining (timeRemaining startTimestamp currentTimestamp)) ]
 
         ( _, _ ) ->
-            text ""
+            h2 [ css [ Tw.uppercase, fontFamilies [ "courier", .value monospace ] ] ] [ text ("Time:" ++ formatTimeRemaining timeLimit) ]
 
 
 timeRemaining : Time.Posix -> Time.Posix -> Int
