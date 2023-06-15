@@ -634,12 +634,16 @@ formatTimeRemaining remainingTime =
 
 timerView : Maybe Time.Posix -> Maybe Time.Posix -> Html Msg
 timerView startTime currentTime =
-    case ( startTime, currentTime ) of
-        ( Just startTimestamp, Just currentTimestamp ) ->
-            h2 [ css [ Tw.uppercase, fontFamilies [ "courier", .value monospace ] ] ] [ text ("Time:" ++ formatTimeRemaining (timeRemaining startTimestamp currentTimestamp)) ]
+    let
+        timeRemainingText =
+            case ( startTime, currentTime ) of
+                ( Just startTimestamp, Just currentTimestamp ) ->
+                    formatTimeRemaining (timeRemaining startTimestamp currentTimestamp)
 
-        ( _, _ ) ->
-            h2 [ css [ Tw.uppercase, fontFamilies [ "courier", .value monospace ] ] ] [ text ("Time:" ++ formatTimeRemaining timeLimit) ]
+                ( _, _ ) ->
+                    formatTimeRemaining timeLimit
+    in
+    h2 [ css [ Tw.uppercase, fontFamilies [ "courier", .value monospace ] ] ] [ text ("Time:" ++ timeRemainingText) ]
 
 
 timeRemaining : Time.Posix -> Time.Posix -> Int
