@@ -1,23 +1,28 @@
+let input, wordEl, word, solution;
+
 function solveWord(word) {
     return word.split("").sort();
 }
 
 function solve() {
-    let input = document.getElementById("text-input");
-    let wordEl = document.getElementById("word")
+    if (input.value.length === 0) {
+        wordEl = document.getElementById("word")
+        word = wordEl.textContent;
+        solution = solveWord(word);
+    }
 
     if (wordEl) {
         let word = wordEl.textContent;
         let solution = solveWord(word);
 
         for (let i = 0; i < solution.length; i += 1) {
-            applySolution(input, solution);
+            applySolution(solution);
         }
-        setTimeout(solve, 0);
+        setTimeout(solve);
     }
 }
 
-function applySolution(input, solution) {
+function applySolution(solution) {
     const letter = solution[input.value.length];
     input.value += letter;
     input.dispatchEvent(new Event("input"));
@@ -25,7 +30,10 @@ function applySolution(input, solution) {
 
 function setup() {
     const startButton = document.getElementById("start-button");
-    startButton.addEventListener("click", () => setTimeout(solve));
+    startButton.addEventListener("click", () => setTimeout(() => {
+        input = document.getElementById("text-input");
+        solve();
+    }));
 }
 
 setTimeout(setup, 100);
