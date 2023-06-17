@@ -11,12 +11,16 @@ function solve() {
         let solution = solveWord(word);
 
         for (let i = 0; i < solution.length; i += 1) {
-            const letter = solution[i];
-            input.value += letter;
-            input.dispatchEvent(new Event("input"));
+            applySolution(input, solution);
         }
         setTimeout(solve, 0);
     }
+}
+
+function applySolution(input, solution) {
+    const letter = solution[input.value.length];
+    input.value += letter;
+    input.dispatchEvent(new Event("input"));
 }
 
 function setup() {
