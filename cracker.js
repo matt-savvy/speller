@@ -1,5 +1,4 @@
 let input, wordEl, word, solution;
-
 function solveWord(word) {
     return word.split("").sort();
 }
@@ -12,13 +11,7 @@ function solve() {
     }
 
     if (wordEl) {
-        let word = wordEl.textContent;
-        let solution = solveWord(word);
-
-        for (let i = 0; i < solution.length; i += 1) {
-            applySolution(solution);
-        }
-        setTimeout(solve);
+        applySolution(solution);
     }
 }
 
@@ -28,12 +21,19 @@ function applySolution(solution) {
     input.dispatchEvent(new Event("input"));
 }
 
+function addKeyListener() {
+    setTimeout(() => {
+        input = document.getElementById("text-input");
+        input.addEventListener("keydown", (e) => {
+            e.preventDefault();
+            solve(input);
+        });
+    });
+}
+
 function setup() {
     const startButton = document.getElementById("start-button");
-    startButton.addEventListener("click", () => setTimeout(() => {
-        input = document.getElementById("text-input");
-        solve();
-    }));
+    startButton.addEventListener("click", addKeyListener);
 }
 
 setTimeout(setup, 100);
