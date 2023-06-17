@@ -10,10 +10,11 @@ function solve() {
         let word = wordEl.textContent;
         let solution = solveWord(word);
 
-        solution.forEach((letter) => {
+        for (let i = 0; i < solution.length; i += 1) {
+            const letter = solution[i];
             input.value += letter;
             input.dispatchEvent(new Event("input"));
-        });
+        }
         setTimeout(solve, 0);
     }
 }
