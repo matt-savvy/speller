@@ -18,5 +18,9 @@ function solve() {
     }
 }
 
-document.getElementById("start-button").click();
-setTimeout(solve, 0);
+function setup() {
+    const startButton = document.getElementById("start-button");
+    startButton.addEventListener("click", () => setTimeout(solve));
+}
+
+setTimeout(setup, 100);
