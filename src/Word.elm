@@ -11,6 +11,7 @@ type Word
 
 type SolvedWord
     = SolvedWord Word
+    | PartialWord Word String
 
 
 createWord : String -> Word
