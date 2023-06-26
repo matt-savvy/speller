@@ -1,4 +1,4 @@
-module Word exposing (Word, alphabetize, awesomeWords, coolWords, createWord, getSolution, getWord, randomWord, selfSolved)
+module Word exposing (SolvedWord(..), Word, alphabetize, awesomeWords, coolWords, createWord, getSolution, getWord, randomWord, selfSolved)
 
 import Random
 import Set
@@ -7,6 +7,10 @@ import Words exposing (words)
 
 type Word
     = Word String String
+
+
+type SolvedWord
+    = SolvedWord Word
 
 
 createWord : String -> Word
