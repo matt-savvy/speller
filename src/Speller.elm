@@ -18,7 +18,7 @@ import Tailwind.Theme as Tw
 import Tailwind.Utilities as Tw
 import Task
 import Time
-import Word exposing (SolvedWord, Word, getSolution, getWord, randomWord)
+import Word exposing (SolvedWord(..), Word, getSolution, getWord, randomWord)
 
 
 
@@ -234,7 +234,7 @@ solvedUpdate model =
         ( nextWord, nextSeed ) =
             randomWord model.seed
     in
-    { model | inputValue = "", solved = Just True, word = nextWord, seed = nextSeed, score = nextScore model }
+    { model | inputValue = "", solved = Just True, word = nextWord, solvedWords = SolvedWord model.word :: model.solvedWords, seed = nextSeed, score = nextScore model }
 
 
 nextScore : Model -> Int
