@@ -18,7 +18,7 @@ import Tailwind.Theme as Tw
 import Tailwind.Utilities as Tw
 import Task
 import Time
-import Word exposing (Word, getSolution, getWord, randomWord)
+import Word exposing (SolvedWord, Word, getSolution, getWord, randomWord)
 
 
 
@@ -48,6 +48,7 @@ type GameStatus
 type alias Model =
     { inputValue : String
     , word : Word
+    , solvedWords : List SolvedWord
     , seed : Random.Seed
     , offset : Int
     , solved : Solved
@@ -68,6 +69,7 @@ init flags =
     in
     ( { inputValue = ""
       , word = word
+      , solvedWords = []
       , seed = nextSeed
       , offset = flags.offset
       , solved = Nothing
