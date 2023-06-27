@@ -239,7 +239,12 @@ solvedUpdate model =
 
 nextScore : Model -> Int
 nextScore model =
-    model.score + String.length (getWord model.word)
+    model.score + scoreWord model.word
+
+
+scoreWord : Word -> Int
+scoreWord word =
+    String.length (getWord word)
 
 
 partialScore : Word -> String -> Int
