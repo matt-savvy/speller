@@ -713,9 +713,9 @@ solvedWordsList solvedWords =
 
                         PartialWord word partial ->
                             li [ css [ Tw.uppercase, gameFont ] ]
-                                [ text partial
-                                , span [ css [ Tw.float_right ] ] [ text (String.fromInt (partialScore word partial)) ]
-                                ]
+                                (List.map (feedbackLetterView [ Tw.mx_0 ]) (getFeedback (getWord word) partial)
+                                    ++ [ span [ css [ Tw.float_right ] ] [ text (String.fromInt (partialScore word partial)) ] ]
+                                )
                 )
                 solvedWords
             )
