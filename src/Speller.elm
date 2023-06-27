@@ -590,11 +590,15 @@ hardModeToggle hardMode =
 
 wordView : Model -> Html Msg
 wordView model =
+    let
+        styles =
+            css [ Tw.text_3xl, Breakpoints.lg [ Tw.text_6xl ] ]
+    in
     if not model.hardMode then
-        div [ id "word" ] (List.map feedbackLetterView (getFeedback (getWord model.word) model.inputValue))
+        div [ styles ] (List.map feedbackLetterView (getFeedback (getWord model.word) model.inputValue))
 
     else
-        div []
+        div [ styles ]
             (List.map (letterView []) (String.split "" (getWord model.word)))
 
 
@@ -608,7 +612,7 @@ inputValueView model =
             else
                 []
     in
-    div [ css (styles ++ [ Tw.h_14 ]) ] (List.map (letterView []) (String.split "" model.inputValue))
+    div [ css (styles ++ [ Tw.h_14, Tw.text_3xl, Breakpoints.lg [ Tw.text_6xl ] ]) ] (List.map (letterView []) (String.split "" model.inputValue))
 
 
 feedbackLetterView : Feedback -> Html Msg
@@ -623,7 +627,7 @@ feedbackLetterView feedback =
 
 letterView : List Css.Style -> String -> Html Msg
 letterView classes letter =
-    span [ css ([ Tw.leading_none, Tw.mx_2, Tw.uppercase, Tw.text_3xl, Breakpoints.lg [ Tw.text_6xl ], gameFont ] ++ classes) ] [ text letter ]
+    span [ css ([ Tw.leading_none, Tw.mx_2, Tw.uppercase, gameFont ] ++ classes) ] [ text letter ]
 
 
 scoreView : Score -> Html Msg
@@ -686,7 +690,11 @@ solvedView solved =
 
 gameOverView : Html Msg
 gameOverView =
-    div []
+    let
+        styles =
+            css [ Tw.text_3xl, Breakpoints.lg [ Tw.text_6xl ] ]
+    in
+    div [ styles ]
         (List.map (letterView []) (String.split "" "game over"))
 
 
