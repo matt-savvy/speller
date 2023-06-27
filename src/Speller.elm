@@ -5,7 +5,7 @@ import Browser.Dom as Dom
 import Css exposing (fontFamilies, monospace)
 import Css.Global
 import Feedback exposing (Feedback(..), getFeedback)
-import Html.Styled exposing (Html, button, div, form, h2, input, label, span, text, toUnstyled)
+import Html.Styled exposing (Html, button, div, form, h2, input, label, li, ol, span, text, toUnstyled)
 import Html.Styled.Attributes exposing (autocomplete, checked, css, disabled, id, type_, value)
 import Html.Styled.Events exposing (onCheck, onClick, onInput, onSubmit)
 import Json.Decode exposing (Decoder, bool, decodeString, field, int, map2, maybe)
@@ -692,18 +692,26 @@ gameOverView =
 
 solvedWordsList : List SolvedWord -> Html Msg
 solvedWordsList solvedWords =
-    ol [ css [ Tw.list_decimal ] ]
-        (List.map
-            (\solvedWord ->
-                case solvedWord of
-                    SolvedWord word ->
-                        li [ css [ Tw.uppercase, gameFont ] ] [ text (getWord word) ]
+    div [ css [ Tw.w_full ] ]
+        [ ol [ css [ Tw.list_inside, Tw.list_decimal ] ]
+            (List.map
+                (\solvedWord ->
+                    case solvedWord of
+                        SolvedWord word ->
+                            li [ css [ Tw.uppercase, gameFont ] ]
+                                [ text (getWord word)
+                                , span [ css [ Tw.float_right ] ] [ text (String.fromInt (scoreWord word)) ]
+                                ]
 
-                    PartialWord _ partial ->
-                        li [ css [ Tw.uppercase, gameFont ] ] [ text partial ]
+                        PartialWord word partial ->
+                            li [ css [ Tw.uppercase, gameFont ] ]
+                                [ text partial
+                                , span [ css [ Tw.float_right ] ] [ text (String.fromInt (partialScore word partial)) ]
+                                ]
+                )
+                solvedWords
             )
-            solvedWords
-        )
+        ]
 
 
 
