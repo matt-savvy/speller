@@ -702,22 +702,23 @@ solvedWordsList : List SolvedWord -> Html Msg
 solvedWordsList solvedWords =
     div [ css [ Tw.w_full ] ]
         [ ol [ css [ Tw.list_inside, Tw.list_decimal ] ]
-            (List.map
-                (\solvedWord ->
-                    case solvedWord of
-                        SolvedWord word ->
-                            li [ css [ Tw.uppercase, gameFont ] ]
-                                [ text (getWord word)
-                                , span [ css [ Tw.float_right ] ] [ text (String.fromInt (scoreWord word)) ]
-                                ]
+            (solvedWords
+                |> List.reverse
+                |> List.map
+                    (\solvedWord ->
+                        case solvedWord of
+                            SolvedWord word ->
+                                li [ css [ Tw.uppercase, gameFont ] ]
+                                    [ text (getWord word)
+                                    , span [ css [ Tw.float_right ] ] [ text (String.fromInt (scoreWord word)) ]
+                                    ]
 
-                        PartialWord word partial ->
-                            li [ css [ Tw.uppercase, gameFont ] ]
-                                (List.map (feedbackLetterView [ Tw.mx_0 ]) (getFeedback (getWord word) partial)
-                                    ++ [ span [ css [ Tw.float_right ] ] [ text (String.fromInt (partialScore word partial)) ] ]
-                                )
-                )
-                solvedWords
+                            PartialWord word partial ->
+                                li [ css [ Tw.uppercase, gameFont ] ]
+                                    (List.map (feedbackLetterView [ Tw.mx_0 ]) (getFeedback (getWord word) partial)
+                                        ++ [ span [ css [ Tw.float_right ] ] [ text (String.fromInt (partialScore word partial)) ] ]
+                                    )
+                    )
             )
         ]
 
