@@ -595,7 +595,7 @@ wordView model =
             css [ Tw.text_3xl, Breakpoints.lg [ Tw.text_6xl ] ]
     in
     if not model.hardMode then
-        div [ styles ] (List.map feedbackLetterView (getFeedback (getWord model.word) model.inputValue))
+        div [ styles ] (List.map (feedbackLetterView []) (getFeedback (getWord model.word) model.inputValue))
 
     else
         div [ styles ]
@@ -615,14 +615,14 @@ inputValueView model =
     div [ css (styles ++ [ Tw.h_14, Tw.text_3xl, Breakpoints.lg [ Tw.text_6xl ] ]) ] (List.map (letterView []) (String.split "" model.inputValue))
 
 
-feedbackLetterView : Feedback -> Html Msg
-feedbackLetterView feedback =
+feedbackLetterView : List Css.Style -> Feedback -> Html Msg
+feedbackLetterView classes feedback =
     case feedback of
         Unused char ->
-            letterView [] (String.fromChar char)
+            letterView classes (String.fromChar char)
 
         Used char ->
-            letterView [ Tw.opacity_50 ] (String.fromChar char)
+            letterView (Tw.opacity_50 :: classes) (String.fromChar char)
 
 
 letterView : List Css.Style -> String -> Html Msg
