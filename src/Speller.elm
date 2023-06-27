@@ -623,12 +623,17 @@ feedbackLetterView feedback =
 
 letterView : List Css.Style -> String -> Html Msg
 letterView classes letter =
-    span [ css ([ Tw.leading_none, Tw.mx_2, Tw.uppercase, Tw.text_3xl, Breakpoints.lg [ Tw.text_6xl ], fontFamilies [ "courier", .value monospace ] ] ++ classes) ] [ text letter ]
+    span [ css ([ Tw.leading_none, Tw.mx_2, Tw.uppercase, Tw.text_3xl, Breakpoints.lg [ Tw.text_6xl ], gameFont ] ++ classes) ] [ text letter ]
 
 
 scoreView : Score -> Html Msg
 scoreView score =
-    h2 [ css [ Tw.uppercase, fontFamilies [ "courier", .value monospace ] ] ] [ text ("Score:" ++ String.fromInt score) ]
+    h2 [ css [ Tw.uppercase, gameFont ] ] [ text ("Score:" ++ String.fromInt score) ]
+
+
+gameFont : Css.Style
+gameFont =
+    fontFamilies [ "courier", .value monospace ]
 
 
 formatTimeRemaining : Int -> String
@@ -650,7 +655,7 @@ timerView startTime currentTime =
                 ( _, _ ) ->
                     formatTimeRemaining timeLimit
     in
-    h2 [ css [ Tw.uppercase, fontFamilies [ "courier", .value monospace ] ] ] [ text ("Time:" ++ timeRemainingText) ]
+    h2 [ css [ Tw.uppercase, gameFont ] ] [ text ("Time:" ++ timeRemainingText) ]
 
 
 timeRemaining : Time.Posix -> Time.Posix -> Int
