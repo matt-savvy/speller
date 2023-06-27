@@ -432,7 +432,7 @@ view model =
 
                 GameOver ->
                     [ gameOverText
-                    , div [] [ gameOverView, inputValueView model ]
+                    , div [] [ gameOverView, inputValueView model, solvedWordsList model.solvedWords ]
                     , spacer
                     , inputForm
                     ]
@@ -688,6 +688,22 @@ gameOverView : Html Msg
 gameOverView =
     div []
         (List.map (letterView []) (String.split "" "game over"))
+
+
+solvedWordsList : List SolvedWord -> Html Msg
+solvedWordsList solvedWords =
+    ol [ css [ Tw.list_decimal ] ]
+        (List.map
+            (\solvedWord ->
+                case solvedWord of
+                    SolvedWord word ->
+                        li [ css [ Tw.uppercase, gameFont ] ] [ text (getWord word) ]
+
+                    PartialWord _ partial ->
+                        li [ css [ Tw.uppercase, gameFont ] ] [ text partial ]
+            )
+            solvedWords
+        )
 
 
 
