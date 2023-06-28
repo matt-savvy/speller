@@ -713,6 +713,7 @@ solvedWordsList solvedWords =
                             PartialWord word partial ->
                                 ( partialScore word partial, solvedWord )
                     )
+                |> List.filter (\( score, _ ) -> score > 0)
                 |> List.map solvedWordView
             )
         ]
@@ -733,14 +734,10 @@ solvedWordView ( score, solvedWord ) =
                 [ text (getWord word), scoreSpan ]
 
         PartialWord word partial ->
-            if score > 0 then
-                solvedWordLi
-                    (List.map (feedbackLetterView [ Tw.mx_0 ]) (getFeedback (getWord word) partial)
-                        ++ [ scoreSpan ]
-                    )
-
-            else
-                text ""
+            solvedWordLi
+                (List.map (feedbackLetterView [ Tw.mx_0 ]) (getFeedback (getWord word) partial)
+                    ++ [ scoreSpan ]
+                )
 
 
 
