@@ -704,36 +704,39 @@ solvedWordsList solvedWords =
         [ ol [ css [ Tw.list_inside, Tw.list_decimal ] ]
             (solvedWords
                 |> List.reverse
+                |> List.map
+                    (\solvedWord ->
+                        case solvedWord of
+                            SolvedWord word ->
+                                ( scoreWord word, solvedWord )
+
+                            PartialWord word partial ->
+                                ( partialScore word partial, solvedWord )
+                    )
                 |> List.map solvedWordView
             )
         ]
 
 
-solvedWordView : SolvedWord -> Html Msg
-solvedWordView solvedWord =
+solvedWordView : ( Int, SolvedWord ) -> Html Msg
+solvedWordView ( score, solvedWord ) =
     let
         solvedWordLi children =
             li [ css [ Tw.uppercase, gameFont ] ] children
 
-        scoreSpan score =
+        scoreSpan =
             span [ css [ Tw.float_right ] ] [ text (String.fromInt score) ]
     in
     case solvedWord of
         SolvedWord word ->
             solvedWordLi
-                [ text (getWord word)
-                , scoreSpan (scoreWord word)
-                ]
+                [ text (getWord word), scoreSpan ]
 
         PartialWord word partial ->
-            let
-                score =
-                    partialScore word partial
-            in
             if score > 0 then
                 solvedWordLi
                     (List.map (feedbackLetterView [ Tw.mx_0 ]) (getFeedback (getWord word) partial)
-                        ++ [ scoreSpan (partialScore word partial) ]
+                        ++ [ scoreSpan ]
                     )
 
             else
