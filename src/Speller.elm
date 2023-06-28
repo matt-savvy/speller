@@ -711,9 +711,13 @@ solvedWordsList solvedWords =
 
 solvedWordView : SolvedWord -> Html Msg
 solvedWordView solvedWord =
+    let
+        solvedWordLi children =
+            li [ css [ Tw.uppercase, gameFont ] ] children
+    in
     case solvedWord of
         SolvedWord word ->
-            li [ css [ Tw.uppercase, gameFont ] ]
+            solvedWordLi
                 [ text (getWord word)
                 , span [ css [ Tw.float_right ] ] [ text (String.fromInt (scoreWord word)) ]
                 ]
@@ -724,7 +728,7 @@ solvedWordView solvedWord =
                     partialScore word partial
             in
             if score > 0 then
-                li [ css [ Tw.uppercase, gameFont ] ]
+                solvedWordLi
                     (List.map (feedbackLetterView [ Tw.mx_0 ]) (getFeedback (getWord word) partial)
                         ++ [ span [ css [ Tw.float_right ] ] [ text (String.fromInt (partialScore word partial)) ] ]
                     )
