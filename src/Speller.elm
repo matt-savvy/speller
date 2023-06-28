@@ -714,12 +714,15 @@ solvedWordView solvedWord =
     let
         solvedWordLi children =
             li [ css [ Tw.uppercase, gameFont ] ] children
+
+        scoreSpan score =
+            span [ css [ Tw.float_right ] ] [ text (String.fromInt score) ]
     in
     case solvedWord of
         SolvedWord word ->
             solvedWordLi
                 [ text (getWord word)
-                , span [ css [ Tw.float_right ] ] [ text (String.fromInt (scoreWord word)) ]
+                , scoreSpan (scoreWord word)
                 ]
 
         PartialWord word partial ->
@@ -730,7 +733,7 @@ solvedWordView solvedWord =
             if score > 0 then
                 solvedWordLi
                     (List.map (feedbackLetterView [ Tw.mx_0 ]) (getFeedback (getWord word) partial)
-                        ++ [ span [ css [ Tw.float_right ] ] [ text (String.fromInt (partialScore word partial)) ] ]
+                        ++ [ scoreSpan (partialScore word partial) ]
                     )
 
             else
