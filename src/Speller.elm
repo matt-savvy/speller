@@ -714,10 +714,18 @@ solvedWordsList solvedWords =
                                     ]
 
                             PartialWord word partial ->
-                                li [ css [ Tw.uppercase, gameFont ] ]
-                                    (List.map (feedbackLetterView [ Tw.mx_0 ]) (getFeedback (getWord word) partial)
-                                        ++ [ span [ css [ Tw.float_right ] ] [ text (String.fromInt (partialScore word partial)) ] ]
-                                    )
+                                let
+                                    score =
+                                        partialScore word partial
+                                in
+                                if score > 0 then
+                                    li [ css [ Tw.uppercase, gameFont ] ]
+                                        (List.map (feedbackLetterView [ Tw.mx_0 ]) (getFeedback (getWord word) partial)
+                                            ++ [ span [ css [ Tw.float_right ] ] [ text (String.fromInt (partialScore word partial)) ] ]
+                                        )
+
+                                else
+                                    text ""
                     )
             )
         ]
