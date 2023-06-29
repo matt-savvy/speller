@@ -44,7 +44,8 @@ app.ports.checkAlreadyPlayed.subscribe(function(message) {
 
 app.ports.setAlreadyPlayed.subscribe(function(message) {
     const key = message.key;
-    const data = JSON.stringify({ score: message.score });
+    const solvedWords = message.solvedWords;
+    const data = JSON.stringify({ score: message.score, solvedWords: solvedWords });
 
     localStorage.setItem(key, data);
 });
