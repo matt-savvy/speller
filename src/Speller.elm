@@ -471,7 +471,7 @@ view model =
 
                 AlreadyPlayed ->
                     [ alreadyPlayedText
-                    , div [] [ gameOverView, inputValueView model ]
+                    , div [] [ gameOverView, inputValueView model, solvedWordsList model.solvedWords ]
                     ]
     in
     div []
