@@ -213,10 +213,13 @@ update msg model =
                             finalScore =
                                 model.score + partial
 
+                            finalSolvedWords =
+                                PartialWord model.word model.inputValue :: model.solvedWords
+
                             alreadyPlayedMessage =
                                 { key = String.fromInt (getTimeSeed time model.zone model.offset), score = finalScore }
                         in
-                        ( { model | score = finalScore, solvedWords = PartialWord model.word model.inputValue :: model.solvedWords, time = Just time, status = GameOver }, setAlreadyPlayed alreadyPlayedMessage )
+                        ( { model | score = finalScore, solvedWords = finalSolvedWords, time = Just time, status = GameOver }, setAlreadyPlayed alreadyPlayedMessage )
 
                     else
                         ( { model | time = Just time }, Cmd.none )
