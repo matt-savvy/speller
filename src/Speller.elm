@@ -9,6 +9,7 @@ import Html.Styled exposing (Html, button, div, form, h2, input, label, li, ol, 
 import Html.Styled.Attributes exposing (autocomplete, checked, css, disabled, id, type_, value)
 import Html.Styled.Events exposing (onCheck, onClick, onInput, onSubmit)
 import Json.Decode exposing (Decoder, bool, decodeString, field, int, map2, maybe)
+import Json.Encode as Encode
 import List
 import Random
 import Set exposing (Set)
@@ -18,7 +19,7 @@ import Tailwind.Theme as Tw
 import Tailwind.Utilities as Tw
 import Task
 import Time
-import Word exposing (SolvedWord(..), Word, getSolution, getWord, randomWord)
+import Word exposing (SolvedWord(..), Word, encodeSolvedWord, getSolution, getWord, randomWord)
 
 
 
@@ -109,7 +110,7 @@ getStartTime nextStatus =
 
 
 type alias AlreadyPlayedMessage =
-    { key : String, score : Int }
+    { key : String, score : Int, solvedWords : Encode.Value }
 
 
 port checkAlreadyPlayed : String -> Cmd msg
@@ -216,8 +217,11 @@ update msg model =
                             finalSolvedWords =
                                 PartialWord model.word model.inputValue :: model.solvedWords
 
+                            solvedWordsJson =
+                                Encode.list encodeSolvedWord finalSolvedWords
+
                             alreadyPlayedMessage =
-                                { key = String.fromInt (getTimeSeed time model.zone model.offset), score = finalScore }
+                                { key = String.fromInt (getTimeSeed time model.zone model.offset), score = finalScore, solvedWords = solvedWordsJson }
                         in
                         ( { model | score = finalScore, solvedWords = finalSolvedWords, time = Just time, status = GameOver }, setAlreadyPlayed alreadyPlayedMessage )
 
