@@ -1,5 +1,6 @@
-module Word exposing (SolvedWord(..), Word, alphabetize, awesomeWords, coolWords, createWord, getSolution, getWord, randomWord, selfSolved)
+module Word exposing (SolvedWord(..), Word, alphabetize, awesomeWords, coolWords, createWord, encodeSolvedWord, getSolution, getWord, randomWord, selfSolved)
 
+import Json.Encode as Encode
 import Random
 import Set
 import Words exposing (words)
@@ -71,3 +72,20 @@ awesomeWords =
 selfSolved : Word -> Bool
 selfSolved (Word word solution) =
     word == solution
+
+
+encodeSolvedWord : SolvedWord -> Encode.Value
+encodeSolvedWord solvedWord =
+    case solvedWord of
+        SolvedWord word ->
+            Encode.object
+                [ ( "solved", Encode.bool True )
+                , ( "word", Encode.string (getWord word) )
+                ]
+
+        PartialWord word input ->
+            Encode.object
+                [ ( "solved", Encode.bool False )
+                , ( "word", Encode.string (getWord word) )
+                , ( "input", Encode.string input )
+                ]
