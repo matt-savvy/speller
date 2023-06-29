@@ -8,7 +8,7 @@ import Feedback exposing (Feedback(..), getFeedback)
 import Html.Styled exposing (Html, button, div, form, h2, input, label, li, ol, span, text, toUnstyled)
 import Html.Styled.Attributes exposing (autocomplete, checked, css, disabled, id, type_, value)
 import Html.Styled.Events exposing (onCheck, onClick, onInput, onSubmit)
-import Json.Decode exposing (Decoder, bool, decodeString, field, int, map2, maybe)
+import Json.Decode exposing (Decoder, bool, decodeString, field, int, list, map2, map3, maybe, oneOf)
 import Json.Encode as Encode
 import List
 import Random
@@ -370,14 +370,21 @@ monthToInt month =
 
 
 type alias AlreadyPlayedResponse =
-    { score : Maybe Int, alreadyPlayed : Bool }
+    { score : Maybe Int, alreadyPlayed : Bool, solvedWords : Maybe (List SolvedWord) }
 
 
 messageDecoder : Decoder AlreadyPlayedResponse
 messageDecoder =
-    map2 AlreadyPlayedResponse
+    map3 AlreadyPlayedResponse
         (maybe (field "score" int))
         (field "alreadyPlayed" bool)
+        (maybe (field "solvedWords" (list solvedWordDecoder)))
+
+
+solvedWordDecoder : Decoder SolvedWord
+solvedWordDecoder =
+    oneOf
+        []
 
 
 decodeMessage : String -> AlreadyPlayedResponse
@@ -387,7 +394,7 @@ decodeMessage messageString =
             value
 
         Err _ ->
-            { alreadyPlayed = False, score = Nothing }
+            { alreadyPlayed = False, score = Nothing, solvedWords = Nothing }
 
 
 
