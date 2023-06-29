@@ -96,7 +96,12 @@ suite =
                     Expect.equal { alreadyPlayed = False, score = Nothing, solvedWords = Nothing } (decodeMessage "{\"alreadyPlayed\":false}")
             , test "alreadyPlayed: true with word list" <|
                 \_ ->
-                    Expect.equal { alreadyPlayed = True, score = Just 9, solvedWords = Nothing }
+                    Expect.equal
+                        { alreadyPlayed = True
+                        , score = Just 9
+                        , solvedWords =
+                            Just [ { solved = False, word = "quickly", input = Just "c" }, { solved = True, word = "employee", input = Nothing } ]
+                        }
                         (decodeMessage "{\"score\":9,\"solvedWords\":[{\"solved\":false,\"word\":\"quickly\",\"input\":\"c\"},{\"solved\":true,\"word\":\"employee\"}],\"alreadyPlayed\":true}")
             , test "invalid data" <|
                 \_ ->

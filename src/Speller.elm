@@ -8,7 +8,7 @@ import Feedback exposing (Feedback(..), getFeedback)
 import Html.Styled exposing (Html, button, div, form, h2, input, label, li, ol, span, text, toUnstyled)
 import Html.Styled.Attributes exposing (autocomplete, checked, css, disabled, id, type_, value)
 import Html.Styled.Events exposing (onCheck, onClick, onInput, onSubmit)
-import Json.Decode exposing (Decoder, bool, decodeString, field, int, list, map2, map3, maybe, oneOf)
+import Json.Decode exposing (Decoder, bool, decodeString, field, int, list, map3, maybe, string)
 import Json.Encode as Encode
 import List
 import Random
@@ -19,7 +19,7 @@ import Tailwind.Theme as Tw
 import Tailwind.Utilities as Tw
 import Task
 import Time
-import Word exposing (SolvedWord(..), Word, encodeSolvedWord, getSolution, getWord, randomWord)
+import Word exposing (SolvedWord(..), Word(..), createWord, encodeSolvedWord, getSolution, getWord, randomWord)
 
 
 
@@ -181,9 +181,12 @@ update msg model =
             let
                 response =
                     decodeMessage message
+
+                solvedWords =
+                    List.map toSolvedWord (Maybe.withDefault [] response.solvedWords)
             in
             if response.alreadyPlayed then
-                ( { model | status = AlreadyPlayed, score = Maybe.withDefault 0 response.score }, Cmd.none )
+                ( { model | status = AlreadyPlayed, score = Maybe.withDefault 0 response.score, solvedWords = solvedWords }, Cmd.none )
 
             else
                 ( { model | status = Ready }, focus "start-button" )
@@ -369,8 +372,12 @@ monthToInt month =
             12
 
 
+type alias SolvedWordRecord =
+    { solved : Bool, word : String, input : Maybe String }
+
+
 type alias AlreadyPlayedResponse =
-    { score : Maybe Int, alreadyPlayed : Bool, solvedWords : Maybe (List SolvedWord) }
+    { score : Maybe Int, alreadyPlayed : Bool, solvedWords : Maybe (List SolvedWordRecord) }
 
 
 messageDecoder : Decoder AlreadyPlayedResponse
@@ -381,10 +388,21 @@ messageDecoder =
         (maybe (field "solvedWords" (list solvedWordDecoder)))
 
 
-solvedWordDecoder : Decoder SolvedWord
+solvedWordDecoder : Decoder SolvedWordRecord
 solvedWordDecoder =
-    oneOf
-        []
+    map3 SolvedWordRecord
+        (field "solved" bool)
+        (field "word" string)
+        (maybe (field "input" string))
+
+
+toSolvedWord : SolvedWordRecord -> SolvedWord
+toSolvedWord wordRecord =
+    if wordRecord.solved then
+        SolvedWord (createWord wordRecord.word)
+
+    else
+        PartialWord (createWord wordRecord.word) (Maybe.withDefault "" wordRecord.input)
 
 
 decodeMessage : String -> AlreadyPlayedResponse
