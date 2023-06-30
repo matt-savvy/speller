@@ -5,7 +5,7 @@ import Browser.Dom as Dom
 import Css exposing (fontFamilies, monospace)
 import Css.Global
 import Feedback exposing (Feedback(..), getFeedback)
-import Html.Styled exposing (Html, button, div, form, h2, input, label, li, ol, span, text, toUnstyled)
+import Html.Styled exposing (Html, button, div, form, h2, input, label, span, table, tbody, td, text, toUnstyled, tr)
 import Html.Styled.Attributes exposing (autocomplete, checked, css, disabled, id, type_, value)
 import Html.Styled.Events exposing (onCheck, onClick, onInput, onSubmit)
 import Json.Decode exposing (Decoder, bool, decodeString, field, int, list, map3, maybe, string)
@@ -732,8 +732,8 @@ gameOverView =
 
 solvedWordsList : List SolvedWord -> Html Msg
 solvedWordsList solvedWords =
-    div [ css [ Tw.w_full, Tw.my_4 ] ]
-        [ ol [ css [ Tw.list_inside, Tw.list_decimal ] ]
+    table [ css [ Tw.w_full, Tw.my_4, Tw.table_auto ] ]
+        [ tbody []
             (solvedWords
                 |> List.reverse
                 |> List.map
@@ -746,30 +746,32 @@ solvedWordsList solvedWords =
                                 ( partialScore word partial, solvedWord )
                     )
                 |> List.filter (\( score, _ ) -> score > 0)
-                |> List.map solvedWordView
+                |> List.indexedMap solvedWordView
             )
         ]
 
 
-solvedWordView : ( Int, SolvedWord ) -> Html Msg
-solvedWordView ( score, solvedWord ) =
+solvedWordView : Int -> ( Int, SolvedWord ) -> Html Msg
+solvedWordView i ( score, solvedWord ) =
     let
-        solvedWordLi children =
-            li [ css [ Tw.uppercase, gameFont ] ] children
+        index =
+            td [ css [] ] [ text (String.fromInt (i + 1)) ]
 
-        scoreSpan =
-            span [ css [ Tw.float_right ] ] [ text (String.fromInt score) ]
+        solvedWordTr children =
+            tr [ css [ Tw.uppercase, gameFont ] ] (index :: children)
+
+        scoreTd =
+            td [ css [ Tw.float_right ] ] [ text (String.fromInt score) ]
     in
     case solvedWord of
         SolvedWord word ->
-            solvedWordLi
-                [ text (getWord word), scoreSpan ]
+            solvedWordTr [ td [] [ text (getWord word) ], scoreTd ]
 
         PartialWord word partial ->
-            solvedWordLi
-                (List.map (feedbackLetterView [ Tw.mx_0 ]) (getFeedback (getWord word) partial)
-                    ++ [ scoreSpan ]
-                )
+            solvedWordTr
+                [ td [ css [ Tw.ml_1 ] ] (List.map (feedbackLetterView [ Tw.mx_0 ]) (getFeedback (getWord word) partial))
+                , scoreTd
+                ]
 
 
 
