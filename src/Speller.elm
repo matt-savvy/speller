@@ -732,7 +732,7 @@ gameOverView =
 
 solvedWordsList : List SolvedWord -> Html Msg
 solvedWordsList solvedWords =
-    div [ css [ Tw.w_full ] ]
+    div [ css [ Tw.w_full, Tw.my_4 ] ]
         [ ol [ css [ Tw.list_inside, Tw.list_decimal ] ]
             (solvedWords
                 |> List.reverse
