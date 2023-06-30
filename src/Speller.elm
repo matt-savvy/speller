@@ -483,7 +483,7 @@ view model =
                 , Tw.items_center
                 , Tw.text_2xl
                 , Breakpoints.lg [ Tw.text_5xl, Tw.gap_1 ]
-                , Tw.w_screen
+                , Tw.w_full
                 , Tw.h_screen
                 , Tw.content_center
                 , Tw.justify_start
