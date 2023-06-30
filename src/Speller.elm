@@ -627,10 +627,10 @@ wordView model =
             css [ Tw.text_3xl, Breakpoints.lg [ Tw.text_6xl ] ]
     in
     if not model.hardMode then
-        div [ styles ] (List.map (feedbackLetterView []) (getFeedback (getWord model.word) model.inputValue))
+        div [ styles, id "word" ] (List.map (feedbackLetterView []) (getFeedback (getWord model.word) model.inputValue))
 
     else
-        div [ styles ]
+        div [ styles, id "word" ]
             (List.map (letterView []) (String.split "" (getWord model.word)))
 
 
