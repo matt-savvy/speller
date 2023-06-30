@@ -33,7 +33,7 @@ function addKeyListener() {
 
 function setup() {
     const startButton = document.getElementById("start-button");
-    startButton.addEventListener("click", addKeyListener);
+    startButton?.addEventListener("click", addKeyListener);
 }
 
 setTimeout(setup, 100);
